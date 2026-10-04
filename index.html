@@ -1,279 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SJN MDCAT LMS - Premium</title>
-    
-    <!-- React & Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0f172a',
-                        glassBg: 'rgba(30, 41, 59, 0.7)',
-                        glassBorder: 'rgba(255, 255, 255, 0.1)',
-                        accent: '#14b8a6', // Teal
-                        accentHover: '#0d9488'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { 
-            background-color: #0f172a; 
-            color: #e2e8f0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
-            background-attachment: fixed;
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SJN MDCAT Academy</title>
+<style>
+:root{--navy:#10243a;--blue:#2764e7;--bg:#f4f7fb;--text:#17263b;--muted:#748197;--line:#e5eaf2;--green:#15966a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:grid;grid-template-columns:245px 1fr;min-height:100vh}
+aside{background:var(--navy);color:white;padding:24px 15px}
+.brand{display:flex;align-items:center;gap:12px;padding:5px 9px 27px}
+.logo{background:#fff;color:var(--navy);width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-weight:900}
+.brand h2{font-size:16px;margin:0}.brand small{color:#aebed3}
+.nav{width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:0;color:#bdc9d9;background:transparent;padding:13px 14px;border-radius:9px;margin:3px 0}
+.nav.active,.nav:hover{background:#263e59;color:white}
+.nav-label{font-size:10px;color:#8297b2;padding:19px 13px 5px;letter-spacing:1.6px}
+main{min-width:0;padding:25px 32px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
+.top h1{font-size:24px;margin:0 0 5px}.muted{color:var(--muted);font-size:13px}
+.pill{background:#e6efff;color:#245bd0;padding:8px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.hero{background:linear-gradient(115deg,#122b49,#2867d9);color:white;border-radius:18px;padding:29px;display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:23px}
+.hero h2{font-size:27px;margin:9px 0}.hero p{color:#d6e3fa;max-width:480px;line-height:1.6}
+.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:700;background:var(--blue);color:white}
+.btn.white{background:white;color:#1648a0}.btn.light{background:#eaf0fb;color:#26466e}
+.btn.danger{background:#fee9e9;color:#a22b2b}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin:20px 0 28px}
+.stat,.card{background:white;border:1px solid var(--line);border-radius:13px;padding:19px}
+.stat .ico{font-size:21px}.stat h2{margin:12px 0 4px;font-size:27px}.stat p{font-size:12px;color:var(--muted);margin:0}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 14px}
+.section-head h2{font-size:18px;margin:0}
+.subjects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.subject{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;cursor:pointer;transition:.15s}
+.subject:hover{transform:translateY(-2px);border-color:#9ab8fb}
+.subject .icon{font-size:25px}.subject h3{margin:12px 0 5px;font-size:15px}
+.subject p{font-size:12px;color:var(--muted);margin:0 0 16px}
+.bar{height:5px;background:#edf0f5;border-radius:9px;overflow:hidden;margin:12px 0}
+.bar span{height:100%;display:block;background:var(--blue)}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:17px}
+.quizrow{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:14px 0}
+.quizrow:last-child{border:0}.quizrow strong{font-size:13px}.quizrow small{display:block;color:var(--muted);margin-top:5px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #dce3ed;border-radius:8px;background:white;color:var(--text);outline-color:var(--blue)}
+label{display:block;font-size:12px;font-weight:700;margin:13px 0 6px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+.question{font-size:18px;line-height:1.65;font-weight:650;margin:20px 0}
+.option{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:13px;margin:9px 0;cursor:pointer;background:white}
+.option:hover{border-color:#8faef8}.option input{width:auto}
+.option.selected{background:#edf3ff;border-color:var(--blue)}
+.feedback{padding:12px;border-radius:9px;margin:15px 0;font-size:14px}
+.correct{background:#e5f8ef;color:#126d4b}.wrong{background:#fff0ee;color:#a43125}
+.qnav{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0}
+.qnum{border:1px solid var(--line);background:white;border-radius:7px;width:36px;height:36px}
+.qnum.current{background:var(--blue);color:white}.qnum.answered{border-color:var(--green)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;background:white}
+td,th{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}
+th{color:var(--muted);font-weight:600}
+.notice{padding:13px;background:#fff7df;border-radius:9px;color:#7b5c15;font-size:13px;margin:15px 0}
+.hide{display:none!important}
+footer{font-size:11px;color:var(--muted);margin-top:30px}
+@media(max-width:1000px){.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
+@media(max-width:650px){.layout{grid-template-columns:1fr}aside{padding:10px;position:sticky;top:0;z-index:5}.brand{padding:4px 7px 10px}.brand .logo{width:34px;height:34px}.nav-label{display:none}.navs{display:flex;overflow-x:auto}.nav{white-space:nowrap;width:auto;margin:0;padding:9px;font-size:12px}main{padding:18px 14px 40px}.hero{padding:20px;align-items:flex-start}.hero h2{font-size:22px}.hero-art{display:none}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.top h1{font-size:21px}}
+</style>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState } = React;
-
-        function App() {
-            const [activeTab, setActiveTab] = useState('dashboard');
-
-            return (
-                <div className="flex h-screen overflow-hidden">
-                    {/* Sidebar */}
-                    <aside className="w-64 glass-panel border-r border-glassBorder flex flex-col transition-all duration-300">
-                        <div className="p-6 flex items-center gap-3 border-b border-glassBorder">
-                            <div className="bg-gradient-to-tr from-teal-400 to-blue-500 text-white p-2 rounded-lg shadow-lg shadow-teal-500/30">
-                                <i className="fa-solid fa-brain text-xl"></i>
-                            </div>
-                            <h1 className="text-xl font-bold tracking-wider text-white">SJN MDCAT</h1>
-                        </div>
-                        
-                        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                            <NavItem icon="fa-chart-pie" label="Dashboard" isActive={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
-                            <NavItem icon="fa-layer-group" label="Question Bank" isActive={activeTab === 'qbank'} onClick={() => setActiveTab('qbank')} />
-                            <NavItem icon="fa-stopwatch" label="Mock Exams" isActive={activeTab === 'mocks'} onClick={() => setActiveTab('mocks')} />
-                            <NavItem icon="fa-book-skull" label="Mistake Book" isActive={activeTab === 'mistakes'} badge="12" onClick={() => setActiveTab('mistakes')} />
-                            <NavItem icon="fa-chart-line" label="Analytics" isActive={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} />
-                        </nav>
-                        
-                        <div className="p-4 border-t border-glassBorder">
-                            <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition">
-                                <i className="fa-solid fa-gear"></i> Settings
-                            </button>
-                        </div>
-                    </aside>
-
-                    {/* Main Content */}
-                    <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
-                        {/* Top Header */}
-                        <header className="h-20 glass-panel border-b border-glassBorder flex items-center justify-between px-8 z-10">
-                            <div>
-                                <h2 className="text-2xl font-bold text-white">Overview</h2>
-                                <p className="text-sm text-gray-400">Track your MDCAT preparation progress</p>
-                            </div>
-                            
-                            <div className="flex items-center gap-6">
-                                <div className="relative cursor-pointer text-gray-400 hover:text-white transition">
-                                    <i className="fa-regular fa-bell text-xl"></i>
-                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-lg shadow-red-500/50">3</span>
-                                </div>
-                                <div className="flex items-center gap-3 pl-6 border-l border-glassBorder cursor-pointer group">
-                                    <div className="text-right">
-                                        <p className="text-sm font-bold text-white group-hover:text-teal-400 transition">Dr. Zamaad Nizamani</p>
-                                        <p className="text-xs text-gray-400">MBBS Graduate / Admin</p>
-                                    </div>
-                                    <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-bold shadow-lg">
-                                        ZN
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
-
-                        {/* Scrollable Content Area */}
-                        <div className="flex-1 overflow-y-auto p-8 z-0">
-                            {activeTab === 'dashboard' && <DashboardContent />}
-                            {activeTab !== 'dashboard' && (
-                                <div className="flex items-center justify-center h-full text-gray-500 flex-col">
-                                    <i className="fa-solid fa-person-digging text-6xl mb-4 text-gray-600"></i>
-                                    <h2 className="text-2xl font-bold text-gray-300">Module Under Construction</h2>
-                                    <p>Select Dashboard to see the main features.</p>
-                                </div>
-                            )}
-                        </div>
-                    </main>
-                </div>
-            );
-        }
-
-        function NavItem({ icon, label, isActive, badge, onClick }) {
-            return (
-                <button 
-                    onClick={onClick}
-                    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${isActive ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30 shadow-[0_0_15px_rgba(20,184,166,0.15)]' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}
-                >
-                    <div className="flex items-center gap-3">
-                        <i className={`fa-solid ${icon} w-5 text-center`}></i>
-                        <span className="font-medium">{label}</span>
-                    </div>
-                    {badge && (
-                        <span className="bg-red-500/20 text-red-400 border border-red-500/30 text-xs py-0.5 px-2 rounded-full font-bold">
-                            {badge}
-                        </span>
-                    )}
-                </button>
-            );
-        }
-
-        function DashboardContent() {
-            return (
-                <div className="space-y-8 pb-10 animate-fade-in">
-                    
-                    {/* Welcome Banner */}
-                    <div className="glass-panel rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-teal-500/20 transition-all duration-700"></div>
-                        <div className="relative z-10 flex justify-between items-center">
-                            <div>
-                                <h1 className="text-3xl font-bold text-white mb-2">Ready to crush the MDCAT?</h1>
-                                <p className="text-gray-400 mb-6 max-w-lg">You have completed 450 MCQs this week. Your accuracy in Physics has improved by 12%. Keep up the great work!</p>
-                                <button className="bg-teal-500 hover:bg-teal-400 text-slate-900 font-bold py-3 px-6 rounded-xl shadow-[0_0_20px_rgba(20,184,166,0.4)] transition-all transform hover:-translate-y-1">
-                                    <i className="fa-solid fa-play mr-2"></i> Start Daily Practice
-                                </button>
-                            </div>
-                            <div className="hidden md:block">
-                                <i className="fa-solid fa-user-doctor text-8xl text-white/5"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* KPI Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <KpiCard title="Total MCQs Solved" value="3,402" icon="fa-check-double" color="text-blue-400" bg="bg-blue-400/10" border="border-blue-500/20" trend="+124 this week" />
-                        <KpiCard title="Overall Accuracy" value="78.4%" icon="fa-bullseye" color="text-teal-400" bg="bg-teal-400/10" border="border-teal-500/20" trend="+2.1% from last month" />
-                        <KpiCard title="Tests Completed" value="14" icon="fa-file-lines" color="text-purple-400" bg="bg-purple-400/10" border="border-purple-500/20" trend="2 Full Length Papers" />
-                        <KpiCard title="Study Streak" value="12 Days" icon="fa-fire-flame-curved" color="text-orange-400" bg="bg-orange-400/10" border="border-orange-500/20" trend="Personal Best: 21 Days" />
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Performance Chart Area (Simulated) */}
-                        <div className="lg:col-span-2 glass-panel rounded-2xl p-6 flex flex-col">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-xl font-bold text-white">Recent Test Performance</h3>
-                                <select className="bg-slate-800 text-sm border border-glassBorder text-gray-300 rounded-lg px-3 py-1 outline-none focus:border-teal-500">
-                                    <option>Last 7 Tests</option>
-                                    <option>Last 30 Days</option>
-                                </select>
-                            </div>
-                            {/* Simulated Bar Chart UI */}
-                            <div className="flex-1 flex items-end justify-between gap-2 pt-10 relative">
-                                {/* Grid lines */}
-                                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-8 text-xs text-gray-600">
-                                    <div className="border-b border-white/5 w-full h-0">100%</div>
-                                    <div className="border-b border-white/5 w-full h-0">75%</div>
-                                    <div className="border-b border-white/5 w-full h-0">50%</div>
-                                    <div className="border-b border-white/5 w-full h-0">25%</div>
-                                </div>
-                                
-                                <ChartBar height="h-[65%]" label="Test 1" />
-                                <ChartBar height="h-[72%]" label="Test 2" />
-                                <ChartBar height="h-[68%]" label="Test 3" />
-                                <ChartBar height="h-[80%]" label="Test 4" />
-                                <ChartBar height="h-[76%]" label="Test 5" />
-                                <ChartBar height="h-[85%]" label="Test 6" active={true} />
-                            </div>
-                        </div>
-
-                        {/* Subject Mastery Indicators */}
-                        <div className="glass-panel rounded-2xl p-6">
-                            <h3 className="text-xl font-bold text-white mb-6">Subject Mastery</h3>
-                            <div className="space-y-5">
-                                <ProgressRow subject="Biology" percentage="88" color="bg-green-500" />
-                                <ProgressRow subject="Chemistry" percentage="72" color="bg-blue-500" />
-                                <ProgressRow subject="Physics" percentage="54" color="bg-red-500" />
-                                <ProgressRow subject="English" percentage="92" color="bg-purple-500" />
-                                <ProgressRow subject="Logical Reasoning" percentage="80" color="bg-yellow-500" />
-                            </div>
-                            <button className="w-full mt-6 bg-white/5 hover:bg-white/10 border border-glassBorder text-gray-300 py-2 rounded-xl transition text-sm">
-                                View Detailed Analysis
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        function KpiCard({ title, value, icon, color, bg, border, trend }) {
-            return (
-                <div className={`glass-panel rounded-2xl p-6 border ${border} hover:bg-white/5 transition-all duration-300`}>
-                    <div className="flex justify-between items-start mb-4">
-                        <div className={`w-12 h-12 rounded-xl ${bg} ${color} flex items-center justify-center text-xl`}>
-                            <i className={`fa-solid ${icon}`}></i>
-                        </div>
-                        <span className="text-xs font-medium text-gray-500 bg-slate-800/80 px-2 py-1 rounded-lg">{trend}</span>
-                    </div>
-                    <h4 className="text-gray-400 text-sm font-medium mb-1">{title}</h4>
-                    <p className="text-3xl font-bold text-white">{value}</p>
-                </div>
-            );
-        }
-
-        function ChartBar({ height, label, active }) {
-            return (
-                <div className="flex flex-col items-center flex-1 z-10 group">
-                    <div className="w-full px-1 sm:px-2 md:px-4 h-48 flex items-end justify-center">
-                        <div className={`w-full rounded-t-md transition-all duration-500 relative ${active ? 'bg-gradient-to-t from-teal-600 to-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.3)]' : 'bg-slate-700 group-hover:bg-slate-600'} ${height}`}>
-                            {active && <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white text-slate-900 text-xs font-bold py-1 px-2 rounded">85%</div>}
-                        </div>
-                    </div>
-                    <span className="text-xs text-gray-500 mt-3">{label}</span>
-                </div>
-            );
-        }
-
-        function ProgressRow({ subject, percentage, color }) {
-            return (
-                <div>
-                    <div className="flex justify-between text-sm mb-1.5">
-                        <span className="text-gray-300 font-medium">{subject}</span>
-                        <span className="text-gray-400 font-bold">{percentage}%</span>
-                    </div>
-                    <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-glassBorder">
-                        <div className={`h-2.5 rounded-full ${color} shadow-[0_0_10px_currentColor]`} style={{ width: `${percentage}%` }}></div>
-                    </div>
-                </div>
-            );
-        }
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-</body>
-    </html>
+<div class="layout">
+<aside>
+ <div class="brand"><div class="logo">SJN</div><div><h2>SJN MDKT</h2><small>ACADEMY</small></div></div>
+ <div class="nav-label">LEARNING</div>
+ <div class="navs">
+ <button class="nav active" data-page="home">⌂ Dashboard</button>
+ <button class="nav" data-page="subjects">▦ Subjects</button>
+ <button class="nav" data-page="practice">◎ Practice MCQs</button>
+ <button class="nav" data-page="results">▤ My Results</button>
+ <button class="nav" data-page="bookmarks">☆ Bookmarks</button>
+ <button class="nav" data-page="admin">＋ Create Quiz</button>
+ </div>
+ <div class="nav-label">ACADEMY</div>
+ <button class="nav" data-page="library">▤ Quiz Library</button>
+ <div style="margin:30px 8px;padding:15px;background:#203650;border-radius:12px">
+ <small style="color:#b9cbe2">YOUR GOAL</small><h3 style="margin:8px 0">Learn. Practice. Excel.</h3>
+ <small style="color:#b9cbe2">Small steps, consistent progress.</small>
+ </div>
+</aside>
+<main>
+<header class="top"><div><h1 id="pageTitle">Student Dashboard</h1><div class="muted" id="today"></div></div><span class="pill">● Academy Portal</span></header>
+<section id="home" class="page">
+ <div class="hero"><div><span class="pill">WELCOME TO SJN MDKT</span><h2>Your next success starts here.</h2><p>Practice smart, understand every concept, and prepare for your medical entry test one MCQ at a time.</p><button class="btn white" onclick="go('practice')">Start Practicing →</button></div><div class="hero-art" style="font-size:82px">🎓</div></div>
+ <div class="stats">
+ <div class="stat"><div class="ico">📚</div><h2 id="totalStat">120</h2><p>Available MCQs</p></div>
+ <div class="stat"><div class="ico">✓</div><h2 id="attemptStat">0</h2><p>Questions Answered</p></div>
+ <div class="stat"><div class="ico">◎</div><h2 id="accuracyStat">0%</h2><p>Overall Accuracy</p></div>
+ <div class="stat"><div class="ico">🏆</div><h2 id="testsStat">0</h2><p>Tests Completed</p></div>
+ </div>
+ <div class="section-head"><h2>Explore Subjects</h2><button class="btn light" onclick="go('subjects')">View All</button></div>
+ <div id="homeSubjects" class="subjects"></div>
+ <div class="grid2">
+ <div><div class="section-head"><h2>Recommended Practice</h2></div><div class="card" id="recommended"></div></div>
+ <div><div class="section-head"><h2>Recent Activity</h2></div><div class="card" id="recent"></div></div>
+ </div>
+</section>
+<section id="subjects" class="page hide"><div class="section-head"><h2>Choose Your Subject</h2></div><p class="muted">Select a subject to start a practice session.</p><div id="allSubjects" class="subjects"></div></section>
+<section id="practice" class="page hide">
+ <div class="card" id="practiceSetup">
+ <h2>Start a Practice Session</h2><p class="muted">Customize your practice before starting.</p>
+ <div class="formgrid"><div><label>Subject</label><select id="practiceSubject"><option value="All">All Subjects</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option></select></div>
+ <div><label>Number of Questions</label><select id="practiceCount"><option>10</option><option>20</option><option selected>30</option><option>60</option><option>120</option></select></div>
+ <div><label>Difficulty</label><select id="practiceDifficulty"><option>All</option><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+ <div><label>Time Limit (minutes, 0 = untimed)</label><input id="practiceTime" type="number" value="30" min="0" max="300"></div>
+ </div><label><input id="negative" type="checkbox" style="width:auto"> Enable negative marking (−0.25 per wrong answer)</label>
+ <div class="actions"><button class="btn" onclick="startPractice()">Start Quiz →</button></div>
+ </div>
+ <div id="exam" class="card hide"></div><div id="examResult" class="card hide"></div>
+</section>
+<section id="results" class="page hide"><div class="section-head"><h2>Your Performance</h2><button class="btn light" onclick="exportResults()">Export CSV</button></div><div id="resultSummary" class="stats"></div><div class="card tablewrap"><table><thead><tr><th>Quiz</th><th>Score</th><th>Accuracy</th><th>Date</th></tr></thead><tbody id="resultTable"></tbody></table></div></section>
+<section id="bookmarks" class="page hide"><div class="section-head"><h2>Saved Questions</h2></div><div id="bookmarkList" class="card"></div></section>
+<section id="library" class="page hide"><div class="section-head"><h2>Quiz Library</h2><button class="btn" onclick="go('admin')">＋ Create Quiz</button></div><input id="searchQuiz" placeholder="Search quizzes or subjects..." oninput="renderLibrary()"><div id="libraryList" class="card" style="margin-top:15px"></div></section>
+<section id="admin" class="page hide">
+ <div class="card"><h2>Create a Quiz</h2><p class="muted">Build and save your own MCQ quiz.</p>
+ <div class="formgrid">
+ <div class="full"><label>Quiz Title</label><input id="quizTitle" placeholder="e.g. Biology — Cell Structure Test"></div>
+ <div><label>Subject</label><select id="quizSubject"><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option></select></div>
+ <div><label>Duration (minutes)</label><input id="quizDuration" type="number" value="30" min="0"></div>
+ <div><label>Difficulty</label><select id="quizDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+ <div><label>Marks per correct answer</label><input id="quizMarks" type="number" value="1" min="1"></div>
+ <div class="full"><label>Question</label><textarea id="newQuestion" rows="3" placeholder="Enter your MCQ question"></textarea></div>
+ <div><label>Option A</label><input id="opt0" placeholder="Option A"></div><div><label>Option B</label><input id="opt1" placeholder="Option B"></div>
+ <div><label>Option C</label><input id="opt2" placeholder="Option C"></div><div><label>Option D</label><input id="opt3" placeholder="Option D"></div>
+ <div><label>Correct Answer</label><select id="correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div>
+ <div><label>Explanation (optional)</label><input id="explanation" placeholder="Explain the correct answer"></div>
+ </div>
+ <div class="actions"><button class="btn" onclick="addQuestion()">＋ Add Question</button><button class="btn light" onclick="saveQuiz()">Save Quiz</button></div>
+ <div id="builderStatus" class="notice">Your quiz currently has 0 questions.</div>
+ <div id="builderList"></div>
+ </div>
+</section>
+<footer>SJN MDKT Academy · Practice with purpose. This demo stores data in your current browser.</footer>
+</main>
+</div>
+<script>
+const subjects={
+ Physics:{icon:"⚡",color:"#eaf2ff",topics:[
+["What is the SI unit of force?","Newton","Joule","Watt","Pascal",0,"Force is measured in newtons."],
+["What is the SI unit of power?","Joule","Watt","Newton","Volt",1,"Power is the rate of energy transfer."],
+["Which quantity is a vector?","Mass","Time","Velocity","Temperature",2,"Velocity has magnitude and direction."],
+["What is the approximate speed of light in vacuum?","3 × 10⁶ m/s","3 × 10⁸ m/s","3 × 10⁵ m/s","300 m/s",1,"The speed of light is approximately 3 × 10⁸ m/s."],
+["Which law describes inertia?","Newton's first law","Newton's second law","Newton's third law","Hooke's law",0,"An object maintains its state unless a net force acts."],
+["What is the SI unit of electric current?","Volt","Ohm","Ampere","Coulomb",2,"Electric current is measured in amperes."],
+["Which particle carries a negative charge?","Proton","Neutron","Electron","Photon",2,"Electrons carry negative electric charge."],
+["What is the SI unit of frequency?","Hertz","Watt","Tesla","Joule",0,"Frequency is measured in hertz."],
+["Which mirror converges parallel rays?","Plane","Convex","Concave","All mirrors",2,"A concave mirror converges parallel rays near its focal point."],
+["Which wave requires a medium?","Light","Radio","Sound","X-rays",2,"Sound is a mechanical wave."],
+["What is the SI unit of resistance?","Ohm","Volt","Ampere","Farad",0,"Electrical resistance is measured in ohms."],
+["Which energy does a moving object possess?","Chemical","Kinetic","Potential only","Nuclear",1,"Kinetic energy is energy of motion."],
+["What is acceleration?","Distance per time","Change in velocity per time","Force per area","Mass per volume",1,"Acceleration is the rate of change of velocity."],
+["What is the SI unit of pressure?","Pascal","Newton","Joule","Watt",0,"One pascal equals one newton per square metre."],
+["Which instrument measures electric current?","Voltmeter","Ammeter","Barometer","Thermometer",1,"An ammeter measures current."],
+["What is the charge of a proton?","Negative","Neutral","Positive","Variable always",2,"A proton carries one positive elementary charge."],
+["Which quantity is measured in joules?","Energy","Current","Resistance","Frequency",0,"The joule is the SI unit of energy."],
+["What is the approximate acceleration due to gravity on Earth?","9.8 m/s²","98 m/s²","1 m/s²","0 m/s²",0,"Near Earth's surface g is approximately 9.8 m/s²."],
+["Which lens is converging?","Concave","Convex","Plane glass","None",1,"A convex lens converges parallel incident rays."],
+["What is the SI unit of momentum?","kg m/s","kg/m","N/m","J/s",0,"Momentum is mass multiplied by velocity."],
+["Which law states F = ma?","Newton's first","Newton's second","Newton's third","Kepler's first",1,"Net force equals mass times acceleration."],
+["What is the unit of potential difference?","Ampere","Coulomb","Volt","Ohm",2,"Potential difference is measured in volts."],
+["Which type of heat transfer occurs in vacuum?","Conduction","Convection","Radiation","None",2,"Radiation can transfer energy through a vacuum."],
+["What is the SI unit of work?","Joule","Watt","Pascal","Ampere",0,"Work is measured in joules."],
+["Which property opposes a change in motion?","Inertia","Power","Density","Frequency",0,"Inertia is resistance to changes in motion."],
+["What is the time period of a 5 Hz wave?","5 s","0.2 s","2.5 s","10 s",1,"Period equals 1/f, so 1/5 = 0.2 seconds."],
+["What is the SI unit of magnetic field?","Tesla","Henry","Weber per second only","Ohm",0,"Magnetic flux density is measured in teslas."],
+["Which quantity is scalar?","Displacement","Force","Speed","Acceleration",2,"Speed has magnitude but no direction."],
+["What is the SI unit of capacitance?","Farad","Tesla","Henry","Watt",0,"Capacitance is measured in farads."],
+["Which principle explains hydraulic lifts?","Pascal's principle","Ohm's law","Snell's law","Archimedes only",0,"Pressure applied to an enclosed fluid is transmitted throughout it."]
+ ]},
+ Chemistry:{icon:"🧪",color:"#e7faf2",topics:[
+["What is the atomic number of carbon?","4","6","8","12",1,"Carbon has six protons."],
+["What is the pH of a neutral solution at 25°C?","0","5","7","14",2,"Neutral water has pH 7 at 25°C."],
+["Which gas is released when an acid reacts with a carbonate?","Oxygen","Hydrogen","Carbon dioxide","Nitrogen",2,"Acid-carbonate reactions release carbon dioxide."],
+["What is the chemical formula of water?","H₂O","HO₂","H₂O₂","OH",0,"Water contains two hydrogen atoms and one oxygen atom."],
+["Which bond involves sharing electron pairs?","Ionic","Covalent","Metallic only","Hydrogen only",1,"Covalent bonds form by sharing electron pairs."],
+["What is the charge of an electron?","Positive","Negative","Neutral","Double positive",1,"Electrons carry negative charge."],
+["Which element has symbol Na?","Nitrogen","Sodium","Neon","Nickel",1,"Na is the symbol for sodium."],
+["What is Avogadro's constant approximately?","6.022 × 10²³","3 × 10⁸","9.8","1.6 × 10⁻¹⁹",0,"One mole contains approximately 6.022 × 10²³ entities."],
+["Which gas is most abundant in Earth's atmosphere?","Oxygen","Carbon dioxide","Nitrogen","Argon",2,"Nitrogen makes up about 78% of dry air."],
+["What is the formula of common table salt?","KCl","NaCl","CaCO₃","NaOH",1,"Sodium chloride is common table salt."],
+["Which particles are found in an atomic nucleus?","Electrons only","Protons and neutrons","Neutrons only always","Photons",1,"The nucleus contains protons and usually neutrons."],
+["Oxidation traditionally involves what?","Gain of electrons","Loss of electrons","Gain of neutrons","Loss of protons",1,"Oxidation is loss of electrons."],
+["Which is a noble gas?","Chlorine","Sodium","Neon","Hydrogen",2,"Neon belongs to group 18."],
+["What is the approximate molar mass of O₂?","16 g/mol","32 g/mol","18 g/mol","44 g/mol",1,"An oxygen molecule contains two atoms of about 16 g/mol each."],
+["Which solution has pH 3?","Acidic","Neutral","Basic","Always pure water",0,"A pH below 7 is acidic at 25°C."],
+["What is the formula of methane?","CH₄","C₂H₆","CO₂","NH₃",0,"Methane contains one carbon and four hydrogen atoms."],
+["Which element is essential in haemoglobin?","Iron","Calcium","Sodium","Neon",0,"Iron in haemoglobin helps bind oxygen."],
+["A catalyst generally does what?","Raises product mass","Lowers activation energy","Changes equilibrium constant","Is always consumed",1,"Catalysts provide an alternative pathway with lower activation energy."],
+["Which is a strong acid?","HCl","CH₃COOH","H₂O","NH₃",0,"Hydrochloric acid ionizes extensively in water."],
+["What is the symbol for potassium?","P","Pt","K","Po",2,"Potassium has the symbol K."],
+["Which process changes liquid to gas?","Condensation","Freezing","Vaporization","Deposition",2,"Vaporization converts liquid into gas."],
+["What is the oxidation number of oxygen in most compounds?","+1","−2","0 always","+2",1,"Oxygen is usually assigned oxidation number −2."],
+["Which substance is an alkali?","NaOH","HCl","CO₂","NaCl",0,"Sodium hydroxide is a soluble base."],
+["What is the smallest unit of an element retaining its identity?","Cell","Atom","Compound","Mixture",1,"An atom is the basic unit of an element."],
+["Which gas turns limewater milky?","Oxygen","Hydrogen","Carbon dioxide","Helium",2,"Carbon dioxide forms insoluble calcium carbonate."],
+["What is the main bond in a sodium chloride crystal?","Covalent","Ionic","Peptide","Ester",1,"Sodium and chloride ions attract electrostatically."],
+["What does a higher reaction temperature usually do?","Slows all reactions","Increases reaction rate","Stops collisions","Removes catalyst",1,"Higher temperature usually increases effective collision frequency."],
+["Which formula represents ammonia?","NH₃","NO₂","N₂O","CH₄",0,"Ammonia

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>SJN MDCAT LMS | Prepare Smarter</title>
+  <meta name="description" content="Your MDCAT preparation hub for Biology, Chemistry, Physics and English.">
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: #131d30;
+      --panel2: #18253b;
+      --text: #f3f6ff;
+      --muted: #a5b2ca;
+      --accent: #68e0c0;
+      --blue: #8aa9ff;
+      --border: rgba(255,255,255,.09);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 80% 0%, #20345a 0%, var(--bg) 45%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .layout { display: flex; min-height: 100vh; }
+    aside {
+      width: 235px; flex-shrink: 0; padding: 28px 18px;
+      border-right: 1px solid var(--border);
+      background: rgba(9,15,28,.72);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; margin-bottom: 38px; }
+    .logo {
+      width: 43px; height: 43px; display: grid; place-items: center;
+      background: linear-gradient(135deg, #68e0c0, #8aa9ff);
+      color: #0b1120; border-radius: 14px; font-weight: 900; font-size: 20px;
+      box-shadow: 0 8px 24px #68e0c022;
+    }
+    .brand strong { display: block; font-size: 16px; }
+    .brand small { color: var(--muted); font-size: 11px; }
+    .nav-label { color: #7787a3; font-size: 10px; letter-spacing: 2px; margin: 25px 10px 12px; }
+    .nav-link {
+      display: flex; gap: 12px; align-items: center; padding: 12px;
+      border-radius: 11px; color: var(--muted); margin: 4px 0; font-size: 13px;
+    }
+    .nav-link.active { background: #68e0c018; color: var(--accent); }
+    main { flex: 1; min-width: 0; padding: 32px clamp(18px, 4vw, 48px); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 36px; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 10px; font-weight: 800; }
+    h1 { font-size: clamp(27px, 4vw, 39px); letter-spacing: -1.5px; margin: 9px 0; }
+    h2 { font-size: 19px; letter-spacing: -.4px; margin: 0; }
+    p { color: var(--muted); line-height: 1.7; }
+    .avatar {
+      width: 43px; height: 43px; border-radius: 50%; display: grid;
+      place-items: center; background: #253753; border: 1px solid #415679; font-weight: 700;
+    }
+    .welcome {
+      position: relative; overflow: hidden; border: 1px solid #8aa9ff30;
+      background: linear-gradient(115deg, #1c3450, #19243d 58%, #183d48);
+      border-radius: 23px; padding: clamp(24px, 4vw, 38px); margin-bottom: 26px;
+      box-shadow: 0 22px 65px #00000020;
+    }
+    .welcome:after {
+      content: ""; position: absolute; width: 210px; height: 210px; right: -65px; top: -75px;
+      border-radius: 50%; border: 1px solid #ffffff16;
+      box-shadow: 0 0 0 25px #ffffff05, 0 0 0 55px #ffffff04;
+    }
+    .welcome p { max-width: 440px; margin-bottom: 23px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 0; border-radius: 11px; padding: 12px 17px; font-weight: 750;
+      font-size: 13px; cursor: pointer; background: var(--accent); color: #092019;
+    }
+    .button.secondary { background: #ffffff0b; color: var(--text); border: 1px solid var(--border); }
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 31px 0 16px; }
+    .section-head span { color: var(--muted); font-size: 12px; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .stat, .subject, .feature {
+      background: linear-gradient(145deg, #18253a, #111b2d);
+      border: 1px solid var(--border); border-radius: 17px; padding: 19px;
+    }
+    .stat-label { color: var(--muted); font-size: 12px; }
+    .stat-value { font-size: 26px; font-weight: 800; margin: 13px 0 5px; }
+    .stat-note { color: var(--accent); font-size: 11px; }
+    .subjects { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 13px; }
+    .subject { transition: transform .2s, border-color .2s; }
+    .subject:hover { transform: translateY(-4px); border-color: #68e0c065; }
+    .subject-icon { font-size: 25px; margin-bottom: 20px; }
+    .subject h3 { margin: 0 0 7px; font-size: 14px; }
+    .subject p { font-size: 11px; margin: 0; }
+    .feature-list { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .feature-icon { font-size: 23px; margin-bottom: 12px; }
+    .feature h3 { margin: 0 0 8px; font-size: 14px; }
+    .feature p { margin: 0; font-size: 12px; }
+    .notice { border: 1px solid var(--border); background: #ffffff05; padding: 15px; border-radius: 13px; color: var(--muted); font-size: 12px; line-height: 1.7; margin-top: 25px; }
+    footer { padding: 30px 0 10px; text-align: center; color: #71819c; font-size: 11px; }
+    @media(max-width: 900px) {
+      aside { width: 190px; }
+      .subjects { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    .quiz-controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; }
+    .quiz-controls label { color:var(--muted); font-size:12px; }
+    .quiz-controls select { color:var(--text); background:#0d1728; border:1px solid var(--border); border-radius:10px; padding:11px; }
+    .quiz-meta { display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:12px; }
+    .quiz-progress-track { height:6px; border-radius:20px; background:#ffffff12; margin-top:12px; overflow:hidden; }
+    #quiz-progress-bar { height:100%; width:0; background:var(--accent); transition:width .2s; }
+    .quiz-tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
+    .quiz-tag { font-size:11px; color:var(--muted); border:1px solid var(--border); padding:5px 8px; border-radius:20px; }
+    .quiz-options { display:grid; gap:10px; }
+    .quiz-option { width:100%; text-align:left; color:var(--text); background:#ffffff06; border:1px solid var(--border); border-radius:12px; padding:13px 14px; cursor:pointer; }
+    .quiz-option:hover:not(:disabled) { border-color:var(--accent); }
+    .quiz-option.correct { border-color:#68e0c0; background:#68e0c018; }
+    .quiz-option.incorrect { border-color:#ff9292; background:#ff929218; }
+    .quiz-option:disabled { cursor:default; }
+    .quiz-feedback { margin-top:14px; padding:13px; border-radius:12px; background:#ffffff08; color:var(--muted); line-height:1.65; font-size:13px; }
+    .quiz-actions { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin-top:18px; }
+    .quiz-review-item { padding:13px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.65; }
+    .quiz-review-item strong { display:block; margin-bottom:5px; }
+    @media(max-width:620px) { .quiz-controls { align-items:stretch; flex-direction:column; } .quiz-controls select { width:100%; } }
+
+    @media(max-width: 620px) {
+      .layout { display: block; }
+      aside { width: 100%; padding: 14px 16px; border-right: 0; border-bottom: 1px solid var(--border); }
+      .brand { margin-bottom: 13px; }
+      .nav-label, aside .nav-link { display: none; }
+      main { padding: 23px 16px; }
+      .topbar { margin-bottom: 23px; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { padding: 15px; }
+      .stat-value { margin: 8px 0 3px; }
+      .feature-list { grid-template-columns: 1fr; }
+      .welcome { border-radius: 18px; }
+    }
+
+    /* SJN premium polish */
+    :root { --accent:#65e6cf; --accent2:#8a7dff; --panel:#111c31; }
+    body { background: radial-gradient(ellipse at 78% 0%, #173e53 0%, transparent 34%), radial-gradient(ellipse at 8% 36%, #25234c 0%, transparent 30%), var(--bg); }
+    .welcome { position:relative; overflow:hidden; background:linear-gradient(125deg,rgba(30,72,93,.96),rgba(33,32,72,.94)); border:1px solid #7cebd833; box-shadow:0 24px 70px #0004,inset 0 1px #ffffff18; }
+    .welcome:after { content:"✦"; position:absolute; right:7%; top:5%; font-size:110px; color:#a8fff51b; text-shadow:0 0 35px #65e6cf22; pointer-events:none; }
+    .stat,.subject,.feature { transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .stat:hover,.subject:hover,.feature:hover { transform:translateY(-4px); border-color:#65e6cf70; box-shadow:0 15px 35px #0003; }
+    .subject { cursor:pointer; }
+    .subject:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .button { background:linear-gradient(115deg,#65e6cf,#85f2dd); color:#071621; font-weight:800; box-shadow:0 8px 24px #65e6cf1c; }
+    .button.secondary { color:var(--text); background:#ffffff0b; box-shadow:none; }
+    .quiz-controls input,.quiz-controls select,.admin-form input,.admin-form select,.admin-form textarea { width:100%; color:var(--text); background:#0d1728; border:1px solid var(--border); border-radius:11px; padding:12px; font:inherit; }
+    .quiz-controls .count-wrap { min-width:145px; }
+    .admin-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; margin-top:16px; }
+    .admin-form label { display:grid; gap:7px; color:var(--muted); font-size:12px; }
+    .admin-form .full { grid-column:1/-1; }
+    .admin-form textarea { min-height:85px; resize:vertical; }
+    .admin-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; }
+    .motivation { margin-top:25px; padding:23px; border-radius:18px; border:1px solid #8a7dff40; background:linear-gradient(120deg,#8a7dff12,#65e6cf0c); }
+    .motivation h2 { margin:0 0 10px; font-size:19px; }
+    .motivation p { line-height:1.8; margin:0; }
+    .small-note { font-size:12px; color:var(--muted); line-height:1.7; }
+    @media(max-width:620px) { .admin-form { grid-template-columns:1fr; } .admin-form .full { grid-column:auto; } .welcome:after { font-size:75px; right:4%; } }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <strong>SJN MDCAT</strong>
+          <small>YOUR PREP SPACE</small>
+        </div>
+      </div>
+      <div class="nav-label">STUDY SPACE</div>
+      <a class="nav-link active" href="#home">⌂ &nbsp; Dashboard</a>
+      <a class="nav-link" href="#subjects">▤ &nbsp; Subjects</a>
+      <a class="nav-link" href="#practice">✳ &nbsp; Practice MCQs</a>
+      <a class="nav-link" href="#tests">◷ &nbsp; Mock Tests</a>
+      <div class="nav-label">YOUR JOURNEY</div>
+      <a class="nav-link" href="#progress">↗ &nbsp; Progress</a>
+      <a class="nav-link" href="#planner">▦ &nbsp; Study Planner</a>
+    </aside>
+
+    <main id="home">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">YOUR MDCAT JOURNEY STARTS HERE</div>
+          <h1>Study smarter. Aim higher.</h1>
+          <p style="margin:0;font-size:13px">One step closer to your medical college dream.</p>
+        </div>
+        <div class="avatar" aria-label="SJN student">S</div>
+      </div>
+
+      <section class="welcome">
+        <div class="eyebrow">WELCOME TO SJN MDCAT</div>
+        <h1 style="max-width:480px">Your future in medicine begins with today's effort.</h1>
+        <p>Build strong concepts, practise MCQs, and prepare for your MDCAT with a clear plan.</p>
+        <a class="button" href="#subjects">Explore subjects &nbsp; →</a>
+      </section>
+
+      <div class="section-head" id="progress">
+        <h2>Your study overview</h2>
+        <span>Preview dashboard</span>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Practice questions</div>
+          <div class="stat-value">100 MCQs</div>
+          <div class="stat-note">Across four core subjects</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Mock test scores</div>
+          <div class="stat-value">Coming soon</div>
+          <div class="stat-note">Track your progress later</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Study streak</div>
+          <div class="stat-value">Coming soon</div>
+          <div class="stat-note">Build a consistent routine</div>
+        </div>
+      </div>
+
+      <div class="section-head" id="subjects">
+        <h2>Explore your subjects</h2>
+        <span>4 core subjects</span>
+      </div>
+      <div class="subjects">
+        <article class="subject" role="button" tabindex="0" data-subject="Biology" aria-label="Practice Biology MCQs">
+          <div class="subject-icon">🧬</div>
+          <h3>Biology</h3>
+          <p>Concepts, chapters & MCQs</p>
+        </article>
+        <article class="subject" role="button" tabindex="0" data-subject="Chemistry" aria-label="Practice Chemistry MCQs">
+          <div class="subject-icon">⚗️</div>
+          <h3>Chemistry</h3>
+          <p>Reactions, concepts & practice</p>
+        </article>
+        <article class="subject" role="button" tabindex="0" data-subject="Physics" aria-label="Practice Physics MCQs">
+          <div class="subject-icon">⚛️</div>
+          <h3>Physics</h3>
+          <p>Formulas, numericals & MCQs</p>
+        </article>
+        <article class="subject" role="button" tabindex="0" data-subject="English" aria-label="Practice English MCQs">
+          <div class="subject-icon">📘</div>
+          <h3>English</h3>
+          <p>Grammar & vocabulary</p>
+        </article>
+      </div>
+
+      <div class="section-head" id="practice">
+        <h2>Your learning toolkit</h2>
+        <span>Planned features</span>
+      </div>
+      <div class="feature-list" id="tests">
+        <article class="feature">
+          <div class="feature-icon">🎯</div>
+          <h3>Custom MCQ Studio</h3>
+          <p>Create a quiz of any size and add your own questions below.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon">⏱️</div>
+          <h3>Answer Review</h3>
+          <p>Get instant feedback, explanations, and a score at the end.</p>
+        </article>
+        <article class="feature" id="planner">
+          <div class="feature-icon">🗓️</div>
+          <h3>Your Question Bank</h3>
+          <p>Save your custom questions in this browser and export a backup.</p>
+        </article>
+      </div>
+
+
+      <section class="welcome" id="mcq-quiz" style="margin-top:30px">
+        <div class="eyebrow">PRACTICE MCQS</div>
+        <h2 style="font-size:24px;margin:10px 0">Test your knowledge</h2>
+        <p>Choose a subject, answer the questions, and review explanations at the end. This starter bank contains original practice questions, not verified past-paper questions.</p>
+        <div class="quiz-controls">
+          <label for="quiz-subject">Subject</label>
+          <select id="quiz-subject">
+            <option value="All">All subjects</option>
+            <option value="Biology">Biology</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Physics">Physics</option>
+            <option value="English">English</option>
+          </select>
+          <label for="quiz-count">Number of MCQs</label>
+          <div class="count-wrap"><input id="quiz-count" type="number" min="1" step="1" value="10" inputmode="numeric" aria-describedby="count-help"></div>
+          <button class="button" id="quiz-start" type="button">Create Quiz →</button>
+          <span id="count-help" class="small-note">Type any number. You can choose up to the available questions.</span>
+        </div>
+      </section>
+      <section class="feature" id="quiz-stage" hidden aria-live="polite">
+        <div class="quiz-meta"><span id="quiz-progress">Question 1</span><span id="quiz-subject-tag"></span></div>
+        <div class="quiz-progress-track"><div id="quiz-progress-bar"></div></div>
+        <h2 id="quiz-question" style="margin:18px 0"></h2>
+        <div id="quiz-tags" class="quiz-tags"></div>
+        <div id="quiz-options" class="quiz-options"></div>
+        <div id="quiz-feedback" class="quiz-feedback" hidden></div>
+        <div class="quiz-actions">
+          <button class="button secondary" id="quiz-exit" type="button">End practice</button>
+          <button class="button" id="quiz-next" type="button" disabled>Next question →</button>
+        </div>
+      </section>
+      <section class="feature" id="quiz-results" hidden aria-live="polite">
+        <div class="eyebrow">PRACTICE COMPLETE</div>
+        <h2 id="quiz-score-title" style="margin:10px 0"></h2>
+        <p id="quiz-score-summary"></p>
+        <div id="quiz-review"></div>
+        <button class="button" id="quiz-restart" type="button">Try another practice set</button>
+      </section>
+
+      <section class="feature" id="add-mcqs" style="margin-top:26px">
+        <div class="eyebrow">YOUR CONTENT · YOUR CONTROL</div>
+        <h2 style="margin:9px 0 6px">Add your own MCQs</h2>
+        <p class="small-note">Write your question, four options, choose the correct option, and add an explanation. Your custom MCQs are saved in this browser on this device. Export a backup before changing devices or clearing browser data.</p>
+        <form id="custom-question-form" class="admin-form">
+          <label>Subject<select id="custom-subject" required><option>Biology</option><option>Chemistry</option><option>Physics</option><option>English</option></select></label>
+          <label>Chapter / topic<input id="custom-topic" placeholder="e.g. Cell Biology" required></label>
+          <label class="full">Your question<textarea id="custom-question" placeholder="Type your MCQ question here..." required></textarea></label>
+          <label>Option A<input id="custom-a" required></label><label>Option B<input id="custom-b" required></label>
+          <label>Option C<input id="custom-c" required></label><label>Option D<input id="custom-d" required></label>
+          <label>Correct option<select id="custom-answer"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></label>
+          <label>Difficulty<select id="custom-difficulty"><option>Easy</option><option>Moderate</option><option>Difficult</option></select></label>
+          <label class="full">Explanation (optional)<textarea id="custom-explanation" placeholder="Why is this the correct answer?"></textarea></label>
+          <div class="full admin-actions"><button class="button" type="submit">＋ Save my MCQ</button><button class="button secondary" type="button" id="export-questions">Export question backup</button><label class="button secondary" for="import-questions" style="cursor:pointer;display:inline-flex;align-items:center">Import backup</label><input id="import-questions" type="file" accept="application/json,.json" hidden></div>
+        </form>
+        <p id="custom-status" class="small-note" role="status" style="margin-top:12px">Your custom questions: <strong id="custom-count">0</strong></p>
+      </section>
+
+      <section class="motivation">
+        <div class="eyebrow">A NOTE FOR COMPETITIVE PREPARATION</div>
+        <h2>Keep going. One paper does not define you.</h2>
+        <p>Remember: the final question paper or a single result does not define your hard work, your ability, or your future. Many factors can affect exam-day performance. Learn from every attempt, protect your wellbeing, and keep moving forward with consistency. Your effort matters beyond one score.</p>
+      </section>
+
+      <div class="notice">
+        <strong>Practice bank available:</strong> This version includes 100 original MDCAT-style practice questions with explanations. They are not represented as verified official past-paper questions. Custom MCQs are saved locally in your browser; they are not synced to other devices or other visitors. Student accounts, cloud-saved results, and leaderboards are not active yet.
+      </div>
+      <footer>© 2026 SJN MDCAT LMS · Learn consistently, grow confidently.</footer>
+    </main>
+  </div>
+<script>
+
+    const questionBank = [{"id": "BIO-001", "subject": "Biology", "chapter": "Biomolecules", "topic": "Carbohydrates", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which molecule is a monosaccharide?", "options": ["Starch", "Glucose", "Glycogen", "Cellulose"], "answer": 1, "explanation": "Glucose is a single sugar unit; starch, glycogen and cellulose are polysaccharides."}, {"id": "BIO-002", "subject": "Biology", "chapter": "Biomolecules", "topic": "Proteins", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Proteins are polymers made from:", "options": ["Fatty acids", "Nucleotides", "Amino acids", "Monosaccharides"], "answer": 2, "explanation": "Amino acids join by peptide bonds to form polypeptides and proteins."}, {"id": "BIO-003", "subject": "Biology", "chapter": "Cell Biology", "topic": "Cell membrane", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The fluid mosaic model describes the membrane as:", "options": ["A rigid cellulose sheet", "A phospholipid bilayer with embedded proteins", "A layer of DNA", "A protein wall without lipids"], "answer": 1, "explanation": "The membrane is a dynamic phospholipid bilayer containing proteins and other components."}, {"id": "BIO-004", "subject": "Biology", "chapter": "Cell Biology", "topic": "Mitochondria", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which organelle is a major site of aerobic ATP production?", "options": ["Lysosome", "Mitochondrion", "Golgi apparatus", "Nucleolus"], "answer": 1, "explanation": "Mitochondria host the Krebs cycle and oxidative phosphorylation in eukaryotic cells."}, {"id": "BIO-005", "subject": "Biology", "chapter": "Cell Biology", "topic": "Ribosomes", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The main function of ribosomes is:", "options": ["Lipid storage", "Protein synthesis", "DNA replication only", "Waste digestion"], "answer": 1, "explanation": "Ribosomes translate messenger RNA into polypeptides."}, {"id": "BIO-006", "subject": "Biology", "chapter": "Enzymes", "topic": "Activation energy", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Enzymes speed up reactions mainly by:", "options": ["Raising activation energy", "Lowering activation energy", "Changing the products", "Being consumed permanently"], "answer": 1, "explanation": "Enzymes provide an alternative pathway with lower activation energy."}, {"id": "BIO-007", "subject": "Biology", "chapter": "Enzymes", "topic": "Temperature", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Why can very high temperatures reduce enzyme activity?", "options": ["The substrate becomes DNA", "The enzyme may denature", "The enzyme gains unlimited active sites", "All collisions stop"], "answer": 1, "explanation": "Excessive heat can disrupt the enzyme's structure and active site."}, {"id": "BIO-008", "subject": "Biology", "chapter": "Bioenergetics", "topic": "Photosynthesis", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which pigment directly absorbs light energy for photosynthesis in plants?", "options": ["Haemoglobin", "Chlorophyll", "Keratin", "Insulin"], "answer": 1, "explanation": "Chlorophyll absorbs light used to drive photosynthetic reactions."}, {"id": "BIO-009", "subject": "Biology", "chapter": "Bioenergetics", "topic": "Cellular respiration", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Glycolysis takes place in the:", "options": ["Nucleus", "Cytoplasm", "Mitochondrial matrix only", "Golgi apparatus"], "answer": 1, "explanation": "Glycolysis occurs in the cytosol and does not directly require oxygen."}, {"id": "BIO-010", "subject": "Biology", "chapter": "Cell Division", "topic": "Mitosis", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "During which stage do sister chromatids separate in mitosis?", "options": ["Prophase", "Metaphase", "Anaphase", "Interphase"], "answer": 2, "explanation": "Sister chromatids separate and move toward opposite poles during anaphase."}, {"id": "BIO-011", "subject": "Biology", "chapter": "Cell Division", "topic": "Meiosis", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Crossing over normally occurs during:", "options": ["Prophase I of meiosis", "Metaphase II", "Telophase of mitosis", "Cytokinesis"], "answer": 0, "explanation": "Homologous chromosomes exchange segments during prophase I."}, {"id": "BIO-012", "subject": "Biology", "chapter": "Genetics", "topic": "DNA", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which base pairs with adenine in DNA?", "options": ["Cytosine", "Guanine", "Thymine", "Uracil"], "answer": 2, "explanation": "In DNA, adenine pairs with thymine; cytosine pairs with guanine."}, {"id": "BIO-013", "subject": "Biology", "chapter": "Genetics", "topic": "Transcription", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Transcription produces:", "options": ["RNA using a DNA template", "DNA using a protein template", "A lipid from RNA", "Amino acids directly from DNA"], "answer": 0, "explanation": "RNA polymerase uses DNA as a template to synthesize RNA."}, {"id": "BIO-014", "subject": "Biology", "chapter": "Genetics", "topic": "Mendelian inheritance", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "An organism with genotype Aa is described as:", "options": ["Homozygous dominant", "Homozygous recessive", "Heterozygous", "A haploid mutant"], "answer": 2, "explanation": "Aa contains two different alleles of the same gene."}, {"id": "BIO-015", "subject": "Biology", "chapter": "Evolution", "topic": "Natural selection", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Natural selection acts most directly on differences in:", "options": ["Inherited traits affecting reproductive success", "Acquired memories only", "The age of rocks", "The number of chromosomes in every species equally"], "answer": 0, "explanation": "Heritable variation that affects survival or reproduction can change in frequency across generations."}, {"id": "BIO-016", "subject": "Biology", "chapter": "Human Physiology", "topic": "Blood", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which blood component is primarily responsible for oxygen transport?", "options": ["Platelets", "Red blood cells", "Plasma proteins only", "Lymphocytes"], "answer": 1, "explanation": "Haemoglobin in red blood cells binds and transports most oxygen in blood."}, {"id": "BIO-017", "subject": "Biology", "chapter": "Human Physiology", "topic": "Heart", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which chamber pumps oxygenated blood into the aorta?", "options": ["Right atrium", "Right ventricle", "Left atrium", "Left ventricle"], "answer": 3, "explanation": "The left ventricle pumps oxygenated blood into systemic circulation through the aorta."}, {"id": "BIO-018", "subject": "Biology", "chapter": "Human Physiology", "topic": "Kidney", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The functional unit of the kidney is the:", "options": ["Neuron", "Nephron", "Alveolus", "Villus"], "answer": 1, "explanation": "Each nephron filters blood and contributes to urine formation."}, {"id": "BIO-019", "subject": "Biology", "chapter": "Human Physiology", "topic": "Gas exchange", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Gas exchange in human lungs occurs mainly in the:", "options": ["Trachea", "Alveoli", "Larynx", "Bronchi cartilage"], "answer": 1, "explanation": "Thin-walled alveoli provide a large surface area for diffusion of gases."}, {"id": "BIO-020", "subject": "Biology", "chapter": "Human Physiology", "topic": "Nervous system", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The gap between two communicating neurons is called a:", "options": ["Sarcomere", "Synapse", "Nephron", "Tendon"], "answer": 1, "explanation": "A synapse is the junction where signals pass between neurons or to an effector."}, {"id": "BIO-021", "subject": "Biology", "chapter": "Immunity", "topic": "Antibodies", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Antibodies are produced by differentiated:", "options": ["Red blood cells", "Plasma cells", "Platelets", "Osteocytes"], "answer": 1, "explanation": "Activated B lymphocytes can differentiate into plasma cells that secrete antibodies."}, {"id": "BIO-022", "subject": "Biology", "chapter": "Reproduction", "topic": "Human reproduction", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Fertilization in humans usually occurs in the:", "options": ["Uterus", "Oviduct (fallopian tube)", "Cervix", "Vagina"], "answer": 1, "explanation": "Fertilization most commonly occurs in the ampulla of the oviduct."}, {"id": "BIO-023", "subject": "Biology", "chapter": "Reproduction", "topic": "Menstrual cycle", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which hormone surge triggers ovulation?", "options": ["Insulin", "Luteinizing hormone", "Thyroxine", "Melatonin"], "answer": 1, "explanation": "A surge in luteinizing hormone triggers ovulation."}, {"id": "BIO-024", "subject": "Biology", "chapter": "Plant Biology", "topic": "Xylem", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Xylem primarily transports:", "options": ["Sugars from leaves only", "Water and mineral ions", "Hormones only", "Oxygen to roots"], "answer": 1, "explanation": "Xylem carries water and dissolved minerals from roots to aerial parts."}, {"id": "BIO-025", "subject": "Biology", "chapter": "Plant Biology", "topic": "Phloem", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Translocation of sucrose in plants mainly occurs through:", "options": ["Xylem vessels", "Phloem sieve tubes", "Stomatal pores", "Root hairs only"], "answer": 1, "explanation": "Phloem transports organic solutes from sources to sinks."}, {"id": "BIO-026", "subject": "Biology", "chapter": "Plant Biology", "topic": "Stomata", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Stomatal opening is regulated by:", "options": ["Guard cells", "Red blood cells", "Root cap cells", "Sieve plates only"], "answer": 0, "explanation": "Changes in guard-cell turgor regulate the opening and closing of stomata."}, {"id": "BIO-027", "subject": "Biology", "chapter": "Ecology", "topic": "Food chains", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Organisms that make organic food from inorganic materials are called:", "options": ["Consumers", "Decomposers only", "Producers", "Parasites"], "answer": 2, "explanation": "Producers, such as plants, convert external energy into chemical energy in organic compounds."}, {"id": "BIO-028", "subject": "Biology", "chapter": "Ecology", "topic": "Energy transfer", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Why is less energy available at higher trophic levels?", "options": ["Energy is created at each level", "Energy is lost through metabolism and heat", "All organisms have identical biomass", "Consumers do not respire"], "answer": 1, "explanation": "Energy is used in life processes and dissipated as heat, so transfer between trophic levels is inefficient."}, {"id": "BIO-029", "subject": "Biology", "chapter": "Microbiology", "topic": "Viruses", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Viruses can reproduce only by:", "options": ["Dividing independently in water", "Using a host cell's machinery", "Performing photosynthesis", "Making their own ribosomes"], "answer": 1, "explanation": "Viruses depend on host-cell machinery to replicate."}, {"id": "BIO-030", "subject": "Biology", "chapter": "Biotechnology", "topic": "PCR", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The main purpose of PCR is to:", "options": ["Amplify a selected DNA sequence", "Translate protein directly", "Destroy all RNA in a sample", "Separate blood cells by size"], "answer": 0, "explanation": "Polymerase chain reaction makes many copies of a selected DNA region."}, {"id": "CHEM-001", "subject": "Chemistry", "chapter": "Atomic Structure", "topic": "Electron shells", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Maximum electrons in the second principal energy level?", "options": ["2", "8", "18", "32"], "answer": 1, "explanation": "The maximum is 2n²; for n=2, this is 8."}, {"id": "CHEM-002", "subject": "Chemistry", "chapter": "Atomic Structure", "topic": "Isotopes", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Atoms of the same element with different neutron numbers are:", "options": ["Isobars", "Isotopes", "Ions", "Allotropes"], "answer": 1, "explanation": "Isotopes share an atomic number but have different mass numbers."}, {"id": "CHEM-003", "subject": "Chemistry", "chapter": "Chemical Bonding", "topic": "Ionic bonds", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "An ionic bond forms primarily through:", "options": ["Sharing protons", "Transfer of electrons", "Sharing neutrons", "Transfer of nuclei"], "answer": 1, "explanation": "Electron transfer forms oppositely charged ions that attract."}, {"id": "CHEM-004", "subject": "Chemistry", "chapter": "Chemical Bonding", "topic": "Molecular geometry", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The molecular shape of CH₄ is:", "options": ["Linear", "Trigonal planar", "Tetrahedral", "Bent"], "answer": 2, "explanation": "Four bonding pairs around carbon give a tetrahedral arrangement."}, {"id": "CHEM-005", "subject": "Chemistry", "chapter": "Equilibrium", "topic": "Le Chatelier's principle", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "For N₂ + 3H₂ ⇌ 2NH₃, increasing pressure at constant temperature shifts equilibrium:", "options": ["Left", "Right", "Not at all", "Stops the reaction"], "answer": 1, "explanation": "The product side has fewer moles of gas, so higher pressure favours it."}, {"id": "CHEM-006", "subject": "Chemistry", "chapter": "Acids and Bases", "topic": "pH", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "At 25°C, the pH of a neutral aqueous solution is:", "options": ["0", "5", "7", "14"], "answer": 2, "explanation": "Neutral water has equal H⁺ and OH⁻ concentrations at 25°C."}, {"id": "CHEM-007", "subject": "Chemistry", "chapter": "Solutions", "topic": "Molarity", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "What is the molarity of 0.5 mol solute in 2.0 L solution?", "options": ["0.25 M", "0.50 M", "1.0 M", "4.0 M"], "answer": 0, "explanation": "Molarity = moles / litres = 0.5 / 2.0 = 0.25 M."}, {"id": "CHEM-008", "subject": "Chemistry", "chapter": "Kinetics", "topic": "Catalysts", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A catalyst increases reaction rate by:", "options": ["Increasing enthalpy", "Lowering activation energy", "Changing equilibrium constant", "Being permanently consumed"], "answer": 1, "explanation": "A catalyst provides an alternative pathway with lower activation energy."}, {"id": "CHEM-009", "subject": "Chemistry", "chapter": "Thermochemistry", "topic": "Exothermic reactions", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "For an exothermic reaction, ΔH is generally:", "options": ["Positive", "Negative", "Always zero", "Undefined"], "answer": 1, "explanation": "Heat is released and products have lower enthalpy than reactants."}, {"id": "CHEM-010", "subject": "Chemistry", "chapter": "Electrochemistry", "topic": "Redox", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Oxidation is:", "options": ["Gain of electrons", "Loss of electrons", "Gain of neutrons", "Loss of protons"], "answer": 1, "explanation": "Oxidation is loss of electrons; reduction is gain."}, {"id": "CHEM-011", "subject": "Chemistry", "chapter": "Equilibrium", "topic": "Equilibrium constant", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "For a given reaction, the equilibrium constant changes when:", "options": ["A catalyst is added", "Pressure is changed", "Temperature is changed", "More reactant is added"], "answer": 2, "explanation": "The equilibrium constant depends on temperature."}, {"id": "CHEM-012", "subject": "Chemistry", "chapter": "Acids and Bases", "topic": "Brønsted–Lowry theory", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A Brønsted–Lowry base:", "options": ["Donates a proton", "Accepts a proton", "Always releases OH⁻", "Accepts electrons only"], "answer": 1, "explanation": "A base accepts H⁺ under this definition."}, {"id": "CHEM-013", "subject": "Chemistry", "chapter": "Chemical Bonding", "topic": "Hydrogen bonding", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which substance exhibits significant intermolecular hydrogen bonding?", "options": ["CH₄", "H₂O", "CO₂", "H₂"], "answer": 1, "explanation": "Water has O–H bonds and can form hydrogen bonds between molecules."}, {"id": "CHEM-014", "subject": "Chemistry", "chapter": "Kinetics", "topic": "Temperature", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Increasing temperature usually speeds a reaction because particles:", "options": ["Become heavier", "Have greater average kinetic energy", "Stop colliding", "Lose all activation energy"], "answer": 1, "explanation": "More particles have sufficient energy to overcome the activation barrier."}, {"id": "CHEM-015", "subject": "Chemistry", "chapter": "Solutions", "topic": "Freezing-point depression", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Adding a nonvolatile solute to water generally makes its freezing point:", "options": ["Increase", "Decrease", "Stay exactly unchanged", "Become 100°C"], "answer": 1, "explanation": "Dissolved particles lower the solvent's freezing point."}, {"id": "CHEM-016", "subject": "Chemistry", "chapter": "Atomic Structure", "topic": "Orbitals", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "How many orbitals are in a p subshell?", "options": ["1", "3", "5", "7"], "answer": 1, "explanation": "A p subshell has three orbitals and can hold up to six electrons."}, {"id": "CHEM-017", "subject": "Chemistry", "chapter": "Organic Chemistry", "topic": "Functional groups", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which group characterizes alcohols?", "options": ["–COOH", "–CHO", "–OH", "–CO–"], "answer": 2, "explanation": "Alcohols contain a hydroxyl group attached to a saturated carbon."}, {"id": "CHEM-018", "subject": "Chemistry", "chapter": "Organic Chemistry", "topic": "Alkenes", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Alkenes contain:", "options": ["Only C–C single bonds", "At least one C=C double bond", "Only a C≡C triple bond", "Ionic carbon bonds"], "answer": 1, "explanation": "A carbon–carbon double bond is characteristic of alkenes."}, {"id": "CHEM-019", "subject": "Chemistry", "chapter": "Chemical Bonding", "topic": "Molecular polarity", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which molecule is nonpolar due to symmetrical linear geometry?", "options": ["H₂O", "NH₃", "CO₂", "HCl"], "answer": 2, "explanation": "The two C=O bond dipoles in linear CO₂ cancel."}, {"id": "CHEM-020", "subject": "Chemistry", "chapter": "Electrochemistry", "topic": "Electrodes", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Reduction occurs at the _____ in an electrolytic cell.", "options": ["Anode", "Cathode", "Salt bridge only", "Power supply"], "answer": 1, "explanation": "Reduction occurs at the cathode in both electrolytic and galvanic cells."}, {"id": "CHEM-021", "subject": "Chemistry", "chapter": "Stoichiometry", "topic": "Avogadro constant", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "One mole contains approximately:", "options": ["6.022 × 10²⁰ particles", "6.022 × 10²³ particles", "3.011 × 10²³ particles", "1.000 × 10²³ particles"], "answer": 1, "explanation": "Avogadro's constant is approximately 6.022 × 10²³ per mole."}, {"id": "CHEM-022", "subject": "Chemistry", "chapter": "Stoichiometry", "topic": "Empirical formula", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A compound has a C:O mole ratio of 1:2. Its empirical formula is:", "options": ["CO", "CO₂", "C₂O", "C₂O₄"], "answer": 1, "explanation": "The simplest whole-number atom ratio is one carbon to two oxygen atoms."}, {"id": "CHEM-023", "subject": "Chemistry", "chapter": "Chemical Bonding", "topic": "Bond order", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "According to molecular orbital theory, the bond order of N₂ is:", "options": ["1", "1.5", "2", "3"], "answer": 3, "explanation": "Bond order = (bonding electrons − antibonding electrons)/2; for N₂ it is 3."}, {"id": "CHEM-024", "subject": "Chemistry", "chapter": "Thermochemistry", "topic": "Enthalpy change", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "At constant pressure, with only pressure-volume work, ΔH equals:", "options": ["Heat exchanged", "Always zero", "Always positive", "Number of moles"], "answer": 0, "explanation": "Under these conditions, enthalpy change equals heat transferred at constant pressure."}, {"id": "CHEM-025", "subject": "Chemistry", "chapter": "Equilibrium", "topic": "Reaction quotient", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "If Q < K, the net reaction proceeds toward:", "options": ["Reactants", "Products", "Neither side", "Permanent stoppage"], "answer": 1, "explanation": "When Q is below K, more products form as the system approaches equilibrium."}, {"id": "CHEM-026", "subject": "Chemistry", "chapter": "Organic Chemistry", "topic": "Isomerism", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Same molecular formula but different atom connectivity describes:", "options": ["Isotopes", "Structural isomers", "Allotropes only", "Identical compounds"], "answer": 1, "explanation": "Structural isomers have the same molecular formula but different connectivity."}, {"id": "CHEM-027", "subject": "Chemistry", "chapter": "Organic Chemistry", "topic": "Carboxylic acids", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which functional group characterizes carboxylic acids?", "options": ["–OH only", "–COOH", "–NH₂", "–O–"], "answer": 1, "explanation": "The carboxyl group is –COOH."}, {"id": "CHEM-028", "subject": "Chemistry", "chapter": "Kinetics", "topic": "First-order half-life", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "For a first-order reaction, half-life is:", "options": ["Proportional to initial concentration", "Inversely proportional to initial concentration", "Independent of initial concentration", "Always zero"], "answer": 2, "explanation": "For a first-order reaction, t½ = 0.693/k."}, {"id": "CHEM-029", "subject": "Chemistry", "chapter": "Solutions", "topic": "Dilution", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "100 mL of 2.0 M solution is diluted to 400 mL. The final concentration is:", "options": ["0.25 M", "0.50 M", "1.0 M", "8.0 M"], "answer": 1, "explanation": "Using M₁V₁=M₂V₂ gives M₂=(2.0×100)/400=0.50 M."}, {"id": "CHEM-030", "subject": "Chemistry", "chapter": "Atomic Structure", "topic": "Photoelectric effect", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Increasing light frequency above threshold increases emitted electrons' maximum kinetic energy because:", "options": ["Photon energy increases", "Work function becomes zero", "Electron mass decreases", "Atomic number increases"], "answer": 0, "explanation": "Photon energy is hf and Kmax = hf − work function."}, {"id": "PHY-001", "subject": "Physics", "chapter": "Measurements", "topic": "SI units", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "What is the SI unit of force?", "options": ["Joule", "Newton", "Watt", "Pascal"], "answer": 1, "explanation": "Force is measured in newtons; 1 N = 1 kg·m/s²."}, {"id": "PHY-002", "subject": "Physics", "chapter": "Vectors", "topic": "Vector addition", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Perpendicular vectors of 3 N and 4 N have resultant magnitude:", "options": ["1 N", "5 N", "7 N", "12 N"], "answer": 1, "explanation": "R = √(3²+4²) = 5 N."}, {"id": "PHY-003", "subject": "Physics", "chapter": "Motion", "topic": "Acceleration", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Velocity changes from 10 m/s to 20 m/s in 5 s. Average acceleration is:", "options": ["2 m/s²", "5 m/s²", "6 m/s²", "10 m/s²"], "answer": 0, "explanation": "a = (20−10)/5 = 2 m/s²."}, {"id": "PHY-004", "subject": "Physics", "chapter": "Motion", "topic": "Equations of motion", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "An object starts from rest and accelerates at 2 m/s² for 4 s. Distance travelled?", "options": ["8 m", "12 m", "16 m", "32 m"], "answer": 2, "explanation": "s = ut + ½at² = 16 m."}, {"id": "PHY-005", "subject": "Physics", "chapter": "Force and Motion", "topic": "Newton's second law", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Net force needed for a 5 kg object to accelerate at 3 m/s²?", "options": ["8 N", "15 N", "20 N", "30 N"], "answer": 1, "explanation": "F = ma = 5×3 = 15 N."}, {"id": "PHY-006", "subject": "Physics", "chapter": "Work and Energy", "topic": "Kinetic energy", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Kinetic energy of a 2 kg object moving at 3 m/s?", "options": ["3 J", "6 J", "9 J", "18 J"], "answer": 2, "explanation": "KE = ½mv² = 9 J."}, {"id": "PHY-007", "subject": "Physics", "chapter": "Momentum", "topic": "Conservation", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "In an isolated system with no net external force, total momentum is:", "options": ["Always zero", "Conserved", "Always increasing", "Equal to kinetic energy"], "answer": 1, "explanation": "Total momentum remains constant in an isolated system."}, {"id": "PHY-008", "subject": "Physics", "chapter": "Circular Motion", "topic": "Centripetal acceleration", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "An object moves at 6 m/s in a circle of radius 2 m. Centripetal acceleration?", "options": ["3 m/s²", "12 m/s²", "18 m/s²", "36 m/s²"], "answer": 2, "explanation": "a = v²/r = 36/2 = 18 m/s²."}, {"id": "PHY-009", "subject": "Physics", "chapter": "Gravitation", "topic": "Weight", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Approximate weight of a 10 kg object on Earth, g=9.8 m/s²?", "options": ["10 N", "49 N", "98 N", "980 N"], "answer": 2, "explanation": "Weight = mg = 98 N."}, {"id": "PHY-010", "subject": "Physics", "chapter": "Properties of Matter", "topic": "Density", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Mass is 200 g and volume is 50 cm³. Density is:", "options": ["0.25 g/cm³", "2 g/cm³", "4 g/cm³", "10 g/cm³"], "answer": 2, "explanation": "Density = 200/50 = 4 g/cm³."}, {"id": "PHY-011", "subject": "Physics", "chapter": "Work and Energy", "topic": "Power", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A machine performs 600 J of work in 3 s. Average power?", "options": ["100 W", "200 W", "300 W", "1800 W"], "answer": 1, "explanation": "Power = work/time = 200 W."}, {"id": "PHY-012", "subject": "Physics", "chapter": "Properties of Matter", "topic": "Pressure", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A force of 100 N acts normally on 2 m². Pressure?", "options": ["25 Pa", "50 Pa", "100 Pa", "200 Pa"], "answer": 1, "explanation": "Pressure = force/area = 50 Pa."}, {"id": "PHY-013", "subject": "Physics", "chapter": "Waves", "topic": "Wave speed", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A wave has frequency 5 Hz and wavelength 2 m. Speed?", "options": ["2.5 m/s", "7 m/s", "10 m/s", "20 m/s"], "answer": 2, "explanation": "v = fλ = 10 m/s."}, {"id": "PHY-014", "subject": "Physics", "chapter": "Sound", "topic": "Pitch", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which property primarily determines sound pitch?", "options": ["Amplitude", "Frequency", "Speed alone", "Intensity alone"], "answer": 1, "explanation": "Pitch increases with frequency."}, {"id": "PHY-015", "subject": "Physics", "chapter": "Optics", "topic": "Reflection", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The angle of reflection is:", "options": ["Twice incidence angle", "Equal to incidence angle", "Always 90°", "Independent of incidence angle"], "answer": 1, "explanation": "Both angles are measured from the normal and are equal."}, {"id": "PHY-016", "subject": "Physics", "chapter": "Optics", "topic": "Lenses", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Which lens converges parallel rays to a real focal point in air?", "options": ["Concave", "Convex", "Plane glass plate", "Every lens always"], "answer": 1, "explanation": "A convex lens converges parallel incident rays to a real focus."}, {"id": "PHY-017", "subject": "Physics", "chapter": "Electricity", "topic": "Ohm's law", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A 12 V potential difference is applied across a 4 Ω resistor. Current?", "options": ["0.33 A", "2 A", "3 A", "48 A"], "answer": 2, "explanation": "I = V/R = 12/4 = 3 A."}, {"id": "PHY-018", "subject": "Physics", "chapter": "Electricity", "topic": "Series resistance", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Two resistors of 3 Ω and 5 Ω are connected in series. Equivalent resistance?", "options": ["1.875 Ω", "2 Ω", "8 Ω", "15 Ω"], "answer": 2, "explanation": "Series resistances add: 3+5=8 Ω."}, {"id": "PHY-019", "subject": "Physics", "chapter": "Magnetism", "topic": "Magnetic force", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "A charged particle moves parallel to a uniform magnetic field. Magnetic force is:", "options": ["Maximum", "Zero", "Always equal to weight", "Always opposite velocity"], "answer": 1, "explanation": "F=|q|vB sinθ; θ=0°, so force is zero."}, {"id": "PHY-020", "subject": "Physics", "chapter": "Electromagnetic Induction", "topic": "Faraday's law", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Induced EMF depends on the rate of change of:", "options": ["Charge alone", "Magnetic flux linkage", "Resistance alone", "Conductor mass"], "answer": 1, "explanation": "Faraday's law relates induced EMF to the rate of change of magnetic flux linkage."}, {"id": "ENG-001", "subject": "English", "chapter": "Grammar", "topic": "Subject-verb agreement", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the grammatically correct sentence.", "options": ["Each of the students have a book.", "Each of the students has a book.", "Each of the student have a book.", "Each students has a book."], "answer": 1, "explanation": "The singular subject 'each' takes 'has'."}, {"id": "ENG-002", "subject": "English", "chapter": "Vocabulary", "topic": "Synonyms", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the closest synonym of 'abundant'.", "options": ["Scarce", "Plentiful", "Weak", "Brief"], "answer": 1, "explanation": "Abundant means plentiful or available in large quantities."}, {"id": "ENG-003", "subject": "English", "chapter": "Grammar", "topic": "Prepositions", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "She has been interested _____ biology since childhood.", "options": ["on", "at", "in", "for"], "answer": 2, "explanation": "The standard phrase is 'interested in'."}, {"id": "ENG-004", "subject": "English", "chapter": "Grammar", "topic": "Tenses", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "By the time the doctor arrived, the patient _____ conscious.", "options": ["regains", "had regained", "has regain", "will regain"], "answer": 1, "explanation": "Past perfect describes an action completed before another past event."}, {"id": "ENG-005", "subject": "English", "chapter": "Vocabulary", "topic": "Antonyms", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the antonym of 'reluctant'.", "options": ["Unwilling", "Hesitant", "Eager", "Doubtful"], "answer": 2, "explanation": "Reluctant means unwilling; eager expresses willingness."}, {"id": "ENG-006", "subject": "English", "chapter": "Grammar", "topic": "Pronouns", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the traditional formal-grammar completion: 'Neither boy brought _____ book.'", "options": ["their", "his", "them", "they"], "answer": 1, "explanation": "Traditional agreement treats 'neither' as singular; singular 'their' is also common in contemporary usage."}, {"id": "ENG-007", "subject": "English", "chapter": "Grammar", "topic": "Passive voice", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the passive form of 'The scientist conducted the experiment.'", "options": ["The experiment conducted the scientist.", "The experiment was conducted by the scientist.", "The experiment is conducting by the scientist.", "The scientist was conducted by the experiment."], "answer": 1, "explanation": "Simple past passive uses was/were + past participle."}, {"id": "ENG-008", "subject": "English", "chapter": "Sentence Correction", "topic": "Parallel structure", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the sentence with correct parallel structure.", "options": ["She enjoys reading, to write, and painting.", "She enjoys to read, writing, and to paint.", "She enjoys reading, writing, and painting.", "She enjoys read, writing, and painting."], "answer": 2, "explanation": "The three activities use the same grammatical form."}, {"id": "ENG-009", "subject": "English", "chapter": "Vocabulary", "topic": "Word meaning in context", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "In 'The evidence was compelling', 'compelling' most nearly means:", "options": ["Unrelated", "Convincing", "Uncertain", "Ordinary"], "answer": 1, "explanation": "Compelling evidence is persuasive or convincing."}, {"id": "ENG-010", "subject": "English", "chapter": "Reading Comprehension", "topic": "Main idea", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Passage: 'Regular revision helps students identify gaps. Practice questions allow them to apply concepts and learn from mistakes.' Main idea?", "options": ["Revision should be avoided.", "Practice replaces all learning.", "Revision and practice support learning.", "Mistakes always prevent improvement."], "answer": 2, "explanation": "The passage explains how revision and practice work together."}, {"id": "ENG-011", "subject": "English", "chapter": "Grammar", "topic": "Conditionals", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "If she had studied harder, she _____ the examination.", "options": ["will pass", "would pass", "would have passed", "has passed"], "answer": 2, "explanation": "Third conditional: if + past perfect, would have + past participle."}, {"id": "ENG-012", "subject": "English", "chapter": "Grammar", "topic": "Articles", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "She hopes to become _____ university professor.", "options": ["a", "an", "the", "no article"], "answer": 0, "explanation": "'University' begins with a /juː/ consonant sound, so use 'a'."}, {"id": "ENG-013", "subject": "English", "chapter": "Vocabulary", "topic": "Synonyms", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the closest synonym of 'meticulous'.", "options": ["Careless", "Thorough", "Impatient", "Uncertain"], "answer": 1, "explanation": "Meticulous means showing great attention to detail."}, {"id": "ENG-014", "subject": "English", "chapter": "Vocabulary", "topic": "Antonyms", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the antonym of 'expand'.", "options": ["Extend", "Enlarge", "Contract", "Increase"], "answer": 2, "explanation": "Contract means to become smaller."}, {"id": "ENG-015", "subject": "English", "chapter": "Grammar", "topic": "Reported speech", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the traditional reported form: He said, 'I am tired.'", "options": ["He said that I am tired.", "He said that he was tired.", "He says that he had tired.", "He said that he is tiring."], "answer": 1, "explanation": "Backshifted reported speech changes 'I am' to 'he was'."}, {"id": "ENG-016", "subject": "English", "chapter": "Sentence Correction", "topic": "Modifiers", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Choose the sentence with the clearest modifier placement.", "options": ["Walking to school, the rain began.", "Walking to school, Sara saw a rainbow.", "Sara saw, walking to school a rainbow.", "The rainbow walking to school was seen by Sara."], "answer": 1, "explanation": "The introductory phrase correctly describes Sara, the subject."}, {"id": "ENG-017", "subject": "English", "chapter": "Grammar", "topic": "Conjunctions", "difficulty": "Easy", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "He was tired, _____ he continued studying.", "options": ["because", "yet", "unless", "since"], "answer": 1, "explanation": "'Yet' shows contrast."}, {"id": "ENG-018", "subject": "English", "chapter": "Grammar", "topic": "Adverbs", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "The student answered the question _____.", "options": ["confident", "confidence", "confidently", "more confidence"], "answer": 2, "explanation": "The adverb 'confidently' modifies the verb 'answered'."}, {"id": "ENG-019", "subject": "English", "chapter": "Vocabulary", "topic": "Idioms", "difficulty": "Moderate", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "What does 'once in a blue moon' mean?", "options": ["Very frequently", "Very rarely", "At midnight every day", "Without preparation"], "answer": 1, "explanation": "The idiom means very rarely."}, {"id": "ENG-020", "subject": "English", "chapter": "Reading Comprehension", "topic": "Inference", "difficulty": "Difficult", "sourceType": "original", "sourceLabel": "Original MDCAT-style practice", "examYear": null, "question": "Passage: 'Library attendance rose steadily after evening study sessions were introduced.' Best-supported inference?", "options": ["The library closed permanently.", "The sessions may have helped attract visitors.", "Visitors disliked all services.", "Attendance decreased after sessions began."], "answer": 1, "explanation": "The timing supports the cautious inference that the sessions may have contributed to increased attendance."}];
+    const BUILT_IN_QUESTIONS = questionBank;
+    const CUSTOM_STORAGE_KEY = "sjn-mdcat-custom-questions-v1";
+    function readCustomQuestions() {
+      try { const value = JSON.parse(localStorage.getItem(CUSTOM_STORAGE_KEY) || "[]"); return Array.isArray(value) ? value : []; }
+      catch (_) { return []; }
+    }
+    let customQuestions = readCustomQuestions();
+    function allQuestions() { return BUILT_IN_QUESTIONS.concat(customQuestions); }
+    function refreshCustomCount() { document.getElementById("custom-count").textContent = customQuestions.length; }
+    const subjectSelect = document.getElementById("quiz-subject");
+    const countSelect = document.getElementById("quiz-count");
+    const startButton = document.getElementById("quiz-start");
+    const stage = document.getElementById("quiz-stage");
+    const results = document.getElementById("quiz-results");
+    const progressText = document.getElementById("quiz-progress");
+    const subjectTag = document.getElementById("quiz-subject-tag");
+    const progressBar = document.getElementById("quiz-progress-bar");
+    const questionText = document.getElementById("quiz-question");
+    const tagsBox = document.getElementById("quiz-tags");
+    const optionsBox = document.getElementById("quiz-options");
+    const feedback = document.getElementById("quiz-feedback");
+    const nextButton = document.getElementById("quiz-next");
+    let activeQuestions = [], currentIndex = 0, score = 0, answers = [], answered = false;
+
+    function shuffle(items) {
+      const copy = items.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+    function startQuiz() {
+      const subject = subjectSelect.value;
+      let pool = allQuestions().filter(q => subject === "All" || q.subject === subject);
+      pool = shuffle(pool);
+      const requested = Number(countSelect.value);
+      if (!Number.isInteger(requested) || requested < 1) { alert("Please enter a whole number of at least 1."); countSelect.focus(); return; }
+      if (!pool.length) { alert("No questions are available for this subject yet."); return; }
+      activeQuestions = pool.slice(0, Math.min(requested, pool.length));
+      if (requested > pool.length) alert(`Only ${pool.length} questions are currently available for this selection, so the quiz will use all ${pool.length}.`);
+      currentIndex = 0; score = 0; answers = []; answered = false;
+      results.hidden = true; stage.hidden = false;
+      renderQuestion();
+      stage.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    function renderQuestion() {
+      const q = activeQuestions[currentIndex];
+      answered = false;
+      progressText.textContent = `Question ${currentIndex + 1} of ${activeQuestions.length}`;
+      subjectTag.textContent = q.subject;
+      progressBar.style.width = `${(currentIndex / activeQuestions.length) * 100}%`;
+      questionText.textContent = q.question;
+      tagsBox.replaceChildren();
+      [q.chapter, q.topic, q.difficulty].forEach(value => {
+        const tag = document.createElement("span");
+        tag.className = "quiz-tag"; tag.textContent = value; tagsBox.appendChild(tag);
+      });
+      optionsBox.replaceChildren();
+      feedback.hidden = true; feedback.textContent = "";
+      nextButton.disabled = true;
+      nextButton.textContent = currentIndex === activeQuestions.length - 1 ? "See results →" : "Next question →";
+      q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.type = "button"; button.className = "quiz-option";
+        button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+        button.addEventListener("click", () => chooseAnswer(index));
+        optionsBox.appendChild(button);
+      });
+    }
+    function chooseAnswer(index) {
+      if (answered) return;
+      answered = true;
+      const q = activeQuestions[currentIndex];
+      const buttons = [...optionsBox.querySelectorAll("button")];
+      buttons.forEach((button, i) => {
+        button.disabled = true;
+        if (i === q.answer) button.classList.add("correct");
+        if (i === index && index !== q.answer) button.classList.add("incorrect");
+      });
+      const correct = index === q.answer;
+      if (correct) score++;
+      answers.push({question:q, chosen:index, correct});
+      feedback.hidden = false;
+      feedback.textContent = `${correct ? "Correct! " : "Not quite. "}${q.explanation}`;
+      nextButton.disabled = false;
+      progressBar.style.width = `${((currentIndex + 1) / activeQuestions.length) * 100}%`;
+    }
+    function showResults() {
+      stage.hidden = true; results.hidden = false;
+      const percent = Math.round((score / activeQuestions.length) * 100);
+      document.getElementById("quiz-score-title").textContent = `${score} / ${activeQuestions.length} correct (${percent}%)`;
+      document.getElementById("quiz-score-summary").textContent = "Review the explanations below, then start another practice set whenever you are ready.";
+      const review = document.getElementById("quiz-review"); review.replaceChildren();
+      answers.forEach((item, i) => {
+        const div = document.createElement("div"); div.className = "quiz-review-item";
+        const title = document.createElement("strong"); title.textContent = `${i + 1}. ${item.question.question}`;
+        const detail = document.createElement("div");
+        detail.textContent = `${item.correct ? "Correct" : "Your answer: " + item.question.options[item.chosen] + " · Correct answer: " + item.question.options[item.question.answer]} — ${item.question.explanation}`;
+        div.append(title, detail); review.appendChild(div);
+      });
+      results.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    startButton.addEventListener("click", startQuiz);
+    nextButton.addEventListener("click", () => {
+      if (!answered) return;
+      if (currentIndex < activeQuestions.length - 1) { currentIndex++; renderQuestion(); }
+      else showResults();
+    });
+    document.getElementById("quiz-exit").addEventListener("click", () => {
+      stage.hidden = true;
+      document.getElementById("mcq-quiz").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+    document.getElementById("quiz-restart").addEventListener("click", () => {
+      document.getElementById("mcq-quiz").scrollIntoView({behavior:"smooth", block:"start"});
+      startQuiz();
+    });
+
+    // Subject tiles really work: click a tile to choose that subject and jump to quiz setup.
+    document.querySelectorAll(".subject[data-subject]").forEach(tile => {
+      const choose = () => { subjectSelect.value = tile.dataset.subject; document.getElementById("mcq-quiz").scrollIntoView({behavior:"smooth",block:"start"}); subjectSelect.focus({preventScroll:true}); };
+      tile.addEventListener("click", choose);
+      tile.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(); } });
+    });
+
+    document.getElementById("custom-question-form").addEventListener("submit", event => {
+      event.preventDefault();
+      const val = id => document.getElementById(id).value.trim();
+      const q = { id:"CUSTOM-" + Date.now(), subject:val("custom-subject"), chapter:val("custom-topic"), topic:val("custom-topic"), difficulty:val("custom-difficulty"), sourceType:"custom", sourceLabel:"Student-created question", examYear:null, question:val("custom-question"), options:[val("custom-a"),val("custom-b"),val("custom-c"),val("custom-d")], answer:Number(val("custom-answer")), explanation:val("custom-explanation") || "Review your notes to reinforce this concept." };
+      if (!q.question || q.options.some(option => !option)) { alert("Please fill in the question and all four options."); return; }
+      customQuestions.push(q);
+      try { localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customQuestions)); }
+      catch (_) { customQuestions.pop(); alert("The browser could not save this question. Export your questions or free some browser storage and try again."); return; }
+      refreshCustomCount();
+      document.getElementById("custom-status").firstChild.textContent = "Saved! Your custom questions: ";
+      event.target.reset();
+      document.getElementById("custom-status").scrollIntoView({behavior:"smooth",block:"nearest"});
+    });
+    document.getElementById("export-questions").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(customQuestions,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href=url; link.download="sjn-mdcat-custom-questions.json"; link.click(); URL.revokeObjectURL(url);
+    });
+    document.getElementById("import-questions").addEventListener("change", async event => {
+      const file = event.target.files && event.target.files[0]; if (!file) return;
+      try {
+        const imported = JSON.parse(await file.text());
+        if (!Array.isArray(imported) || imported.some(q => !q || !["Biology","Chemistry","Physics","English"].includes(q.subject) || typeof q.question !== "string" || !Array.isArray(q.options) || q.options.length !== 4 || !Number.isInteger(q.answer) || q.answer < 0 || q.answer > 3)) throw new Error("invalid format");
+        customQuestions = customQuestions.concat(imported.map((q,i) => ({...q,id:"CUSTOM-IMPORT-"+Date.now()+"-"+i,sourceType:"custom",sourceLabel:"Student-created question"})));
+        localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customQuestions)); refreshCustomCount();
+        document.getElementById("custom-status").firstChild.textContent = "Backup imported. Your custom questions: ";
+      } catch (_) { alert("That file does not look like a valid SJN MDCAT question backup."); }
+      event.target.value = "";
+    });
+    refreshCustomCount();
+
+  </script>
+</body>
+</html>

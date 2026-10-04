@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SJN MDCAT LMS</title>
+    <!-- React & Babel for logic -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // --- QUESTION BANK ---
+        // You can expand this array to hold all 180 MCQs
+        const questionBank = [
+            { id: 1, subject: "Biology", question: "Which of the following is considered the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi Apparatus"], correct: "Mitochondria", explanation: "Mitochondria generate most of the chemical energy needed to power the cell's biochemical reactions." },
+            { id: 2, subject: "Physics", question: "What is the SI unit of electric current?", options: ["Volt", "Ampere", "Coulomb", "Ohm"], correct: "Ampere", explanation: "The Ampere (A) is the SI base unit of electrical current." },
+            { id: 3, subject: "Chemistry", question: "Which bond is formed by the sharing of electron pairs between atoms?", options: ["Ionic Bond", "Covalent Bond", "Hydrogen Bond", "Metallic Bond"], correct: "Covalent Bond", explanation: "A covalent bond involves the sharing of electron pairs between nonmetal atoms." },
+            { id: 4, subject: "English", question: "Choose the correct synonym for 'Ephemeral':", options: ["Permanent", "Short-lived", "Glowing", "Intense"], correct: "Short-lived", explanation: "Ephemeral means lasting for a very short time." },
+            { id: 5, subject: "Logical Reasoning", question: "If A is taller than B, and B is taller than C, who is the shortest?", options: ["A", "B", "C", "Cannot be determined"], correct: "C", explanation: "Since A > B and B > C, it logically follows that C is the shortest." }
+        ];
+
+        function App() {
+            const [currentView, setCurrentView] = useState('dashboard');
+            const [mistakes, setMistakes] = useState([]);
+
+            const logMistake = (question, selected, correct) => {
+                // Prevent duplicate logs of the same question
+                if (!mistakes.find(m => m.id === question.id)) {
+                    setMistakes([...mistakes, { ...question, selected }]);
+                }
+            };
+
+            return (
+                <div class="min-h-screen flex flex-col">
+                    {/* Navigation Bar */}
+                    <nav class="bg-teal-700 text-white shadow-lg">
+                        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                            <div class="text-2xl font-bold tracking-wider cursor-pointer" onClick={() => setCurrentView('dashboard')}>
+                                <i class="fa-solid fa-graduation-cap mr-2"></i>SJN MDCAT LMS
+                            </div>
+                            <div class="space-x-4">
+                                <button onClick={() => setCurrentView('dashboard')} class="hover:text-teal-200 transition"><i class="fa-solid fa-home mr-1"></i> Dashboard</button>
+                                <button onClick={() => setCurrentView('quiz')} class="hover:text-teal-200 transition"><i class="fa-solid fa-laptop-code mr-1"></i> Practice Test</button>
+                                <button onClick={() => setCurrentView('mistakes')} class="hover:text-teal-200 transition"><i class="fa-solid fa-book-open mr-1"></i> Mistake Book ({mistakes.length})</button>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Main Content Area */}
+                    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8">
+                        {currentView === 'dashboard' && <Dashboard setView={setCurrentView} mistakesCount={mistakes.length} totalQuestions={questionBank.length} />}
+                        {currentView === 'quiz' && <QuizEngine setView={setCurrentView} questions={questionBank} logMistake={logMistake} />}
+                        {currentView === 'mistakes' && <MistakeBook mistakes={mistakes} setView={setCurrentView} />}
+                    </main>
+
+                    {/* Footer */}
+                    <footer class="bg-gray-800 text-gray-400 text-center py-4">
+                        <p>&copy; 2026 SJN MDCAT Academy. Dedicated to Medical Excellence.</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // --- DASHBOARD COMPONENT ---
+        function Dashboard({ setView, mistakesCount, totalQuestions }) {
+            return (
+                <div class="space-y-8 animate-fade-in">
+                    <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-teal-600 text-center">
+                        <h1 class="text-4xl font-bold text-gray-800 mb-2">Welcome to SJN MDCAT Academy</h1>
+                        <p class="text-gray-600">Your dedicated portal for realistic MDCAT test preparation.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        {/* Start Quiz Card */}
+                        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col items-center" onClick={() => setView('quiz')}>
+                            <div class="bg-teal-100 p-4 rounded-full text-teal-700 mb-4">
+                                <i class="fa-solid fa-play text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Custom Practice Quiz</h2>
+                            <p class="text-gray-500 text-center mb-4">Practice {totalQuestions} available questions from past papers. Tests are generated instantly.</p>
+                            <button class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition w-full">Start Practice</button>
+                        </div>
+
+                        {/* Mistake Book Card */}
+                        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col items-center" onClick={() => setView('mistakes')}>
+                            <div class="bg-red-100 p-4 rounded-full text-red-600 mb-4">
+                                <i class="fa-solid fa-book-medical text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Smart Mistake Book</h2>
+                            <p class="text-gray-500 text-center mb-4">Review the concepts you got wrong. You currently have <span class="font-bold text-red-600">{mistakesCount}</span> logged mistakes.</p>
+                            <button class="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition w-full">Review Mistakes</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- QUIZ ENGINE COMPONENT ---
+        function QuizEngine({ setView, questions, logMistake }) {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [selectedOption, setSelectedOption] = useState(null);
+            const [isSubmitted, setIsSubmitted] = useState(false);
+            const [score, setScore] = useState(0);
+            const [showResults, setShowResults] = useState(false);
+
+            const currentQ = questions[currentIndex];
+
+            const handleSubmit = () => {
+                if (!selectedOption) return;
+                setIsSubmitted(true);
+                
+                if (selectedOption === currentQ.correct) {
+                    setScore(score + 1);
+                } else {
+                    logMistake(currentQ, selectedOption, currentQ.correct);
+                }
+            };
+
+            const handleNext = () => {
+                if (currentIndex + 1 < questions.length) {
+                    setCurrentIndex(currentIndex + 1);
+                    setSelectedOption(null);
+                    setIsSubmitted(false);
+                } else {
+                    setShowResults(true);
+                }
+            };
+
+            if (showResults) {
+                return (
+                    <div class="bg-white p-8 rounded-xl shadow-md text-center max-w-2xl mx-auto">
+                        <i class="fa-solid fa-award text-6xl text-yellow-400 mb-4"></i>
+                        <h2 class="text-3xl font-bold mb-2">Test Completed!</h2>
+                        <p class="text-xl text-gray-600 mb-6">You scored <span class="font-bold text-teal-600">{score}</span> out of <span class="font-bold">{questions.length}</span>.</p>
+                        <div class="flex justify-center space-x-4">
+                            <button onClick={() => setView('mistakes')} class="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition">View Mistake Book</button>
+                            <button onClick={() => setView('dashboard')} class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition">Back to Home</button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-teal-600">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold">{currentQ.subject}</span>
+                        <span class="text-gray-500 font-medium">Question {currentIndex + 1} of {questions.length}</span>
+                    </div>
+                    
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">{currentQ.question}</h2>
+
+                    <div class="space-y-3 mb-6">
+                        {currentQ.options.map((opt, i) => {
+                            let btnClass = "w-full text-left p-4 rounded-lg border-2 transition font-medium ";
+                            
+                            if (!isSubmitted) {
+                                btnClass += selectedOption === opt ? "border-teal-500 bg-teal-50 text-teal-800" : "border-gray-200 hover:border-teal-300 hover:bg-gray-50 text-gray-700";
+                            } else {
+                                if (opt === currentQ.correct) {
+                                    btnClass += "border-green-500 bg-green-50 text-green-800"; // Correct answer is green
+                                } else if (selectedOption === opt && opt !== currentQ.correct) {
+                                    btnClass += "border-red-500 bg-red-50 text-red-800"; // Wrong selected answer is red
+                                } else {
+                                    btnClass += "border-gray-200 text-gray-400";
+                                }
+                            }
+
+                            return (
+                                <button 
+                                    key={i} 
+                                    disabled={isSubmitted}
+                                    onClick={() => setSelectedOption(opt)}
+                                    class={btnClass}
+                                >
+                                    {opt}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {isSubmitted && (
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded text-blue-800">
+                            <strong>Explanation:</strong> {currentQ.explanation}
+                        </div>
+                    )}
+
+                    <div class="flex justify-end">
+                        {!isSubmitted ? (
+                            <button onClick={handleSubmit} disabled={!selectedOption} class={`px-8 py-2 rounded-lg font-semibold text-white transition ${selectedOption ? 'bg-teal-600 hover:bg-teal-700' : 'bg-gray-300 cursor-not-allowed'}`}>Submit</button>
+                        ) : (
+                            <button onClick={handleNext} class="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 rounded-lg font-semibold transition">Next Question <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // --- MISTAKE BOOK COMPONENT ---
+        function MistakeBook({ mistakes, setView }) {
+            if (mistakes.length === 0) {
+                return (
+                    <div class="text-center bg-white p-12 rounded-xl shadow-md max-w-2xl mx-auto">
+                        <i class="fa-solid fa-check-circle text-6xl text-green-500 mb-4"></i>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Your Mistake Book is Empty!</h2>
+                        <p class="text-gray-500 mb-6">Great job. You haven't logged any wrong answers yet.</p>
+                        <button onClick={() => setView('quiz')} class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition">Take a Practice Test</button>
+                    </div>
+                );
+            }
+
+            return (
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-book-medical text-red-500 mr-2"></i> Mistake Book</h2>
+                        <span class="bg-red-100 text-red-800 px-4 py-1 rounded-full font-bold">{mistakes.length} Logged</span>
+                    </div>
+
+                    <div class="space-y-6">
+                        {mistakes.map((m, index) => (
+                            <div key={index} class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-bold text-gray-500 uppercase">{m.subject}</span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">{m.question}</h3>
+                                
+                                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-red-50 p-3 rounded-lg border border-red-200">
+                                        <span class="block text-xs text-red-500 font-bold uppercase mb-1">You selected</span>
+                                        <span class="text-red-800">{m.selected}</span>
+                                    </div>
+                                    <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+                                        <span class="block text-xs text-green-500 font-bold uppercase mb-1">Correct Answer</span>
+                                        <span class="text-green-800">{m.correct}</span>
+                                    </div>
+                                </div>
+                                <div class="text-sm text-gray-600 bg-gray-50 p-3 rounded">
+                                    <strong>Concept Review:</strong> {m.explanation}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

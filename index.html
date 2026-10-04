@@ -102,6 +102,27 @@
       aside { width: 190px; }
       .subjects { grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
+
+    .quiz-controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; }
+    .quiz-controls label { color:var(--muted); font-size:12px; }
+    .quiz-controls select { color:var(--text); background:#0d1728; border:1px solid var(--border); border-radius:10px; padding:11px; }
+    .quiz-meta { display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:12px; }
+    .quiz-progress-track { height:6px; border-radius:20px; background:#ffffff12; margin-top:12px; overflow:hidden; }
+    #quiz-progress-bar { height:100%; width:0; background:var(--accent); transition:width .2s; }
+    .quiz-tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
+    .quiz-tag { font-size:11px; color:var(--muted); border:1px solid var(--border); padding:5px 8px; border-radius:20px; }
+    .quiz-options { display:grid; gap:10px; }
+    .quiz-option { width:100%; text-align:left; color:var(--text); background:#ffffff06; border:1px solid var(--border); border-radius:12px; padding:13px 14px; cursor:pointer; }
+    .quiz-option:hover:not(:disabled) { border-color:var(--accent); }
+    .quiz-option.correct { border-color:#68e0c0; background:#68e0c018; }
+    .quiz-option.incorrect { border-color:#ff9292; background:#ff929218; }
+    .quiz-option:disabled { cursor:default; }
+    .quiz-feedback { margin-top:14px; padding:13px; border-radius:12px; background:#ffffff08; color:var(--muted); line-height:1.65; font-size:13px; }
+    .quiz-actions { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin-top:18px; }
+    .quiz-review-item { padding:13px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.65; }
+    .quiz-review-item strong { display:block; margin-bottom:5px; }
+    @media(max-width:620px) { .quiz-controls { align-items:stretch; flex-direction:column; } .quiz-controls select { width:100%; } }
+
     @media(max-width: 620px) {
       .layout { display: block; }
       aside { width: 100%; padding: 14px 16px; border-right: 0; border-bottom: 1px solid var(--border); }
@@ -115,6 +136,30 @@
       .feature-list { grid-template-columns: 1fr; }
       .welcome { border-radius: 18px; }
     }
+
+    /* SJN premium polish */
+    :root { --accent:#65e6cf; --accent2:#8a7dff; --panel:#111c31; }
+    body { background: radial-gradient(ellipse at 78% 0%, #173e53 0%, transparent 34%), radial-gradient(ellipse at 8% 36%, #25234c 0%, transparent 30%), var(--bg); }
+    .welcome { position:relative; overflow:hidden; background:linear-gradient(125deg,rgba(30,72,93,.96),rgba(33,32,72,.94)); border:1px solid #7cebd833; box-shadow:0 24px 70px #0004,inset 0 1px #ffffff18; }
+    .welcome:after { content:"✦"; position:absolute; right:7%; top:5%; font-size:110px; color:#a8fff51b; text-shadow:0 0 35px #65e6cf22; pointer-events:none; }
+    .stat,.subject,.feature { transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .stat:hover,.subject:hover,.feature:hover { transform:translateY(-4px); border-color:#65e6cf70; box-shadow:0 15px 35px #0003; }
+    .subject { cursor:pointer; }
+    .subject:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .button { background:linear-gradient(115deg,#65e6cf,#85f2dd); color:#071621; font-weight:800; box-shadow:0 8px 24px #65e6cf1c; }
+    .button.secondary { color:var(--text); background:#ffffff0b; box-shadow:none; }
+    .quiz-controls input,.quiz-controls select,.admin-form input,.admin-form select,.admin-form textarea { width:100%; color:var(--text); background:#0d1728; border:1px solid var(--border); border-radius:11px; padding:12px; font:inherit; }
+    .quiz-controls .count-wrap { min-width:145px; }
+    .admin-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; margin-top:16px; }
+    .admin-form label { display:grid; gap:7px; color:var(--muted); font-size:12px; }
+    .admin-form .full { grid-column:1/-1; }
+    .admin-form textarea { min-height:85px; resize:vertical; }
+    .admin-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; }
+    .motivation { margin-top:25px; padding:23px; border-radius:18px; border:1px solid #8a7dff40; background:linear-gradient(120deg,#8a7dff12,#65e6cf0c); }
+    .motivation h2 { margin:0 0 10px; font-size:19px; }
+    .motivation p { line-height:1.8; margin:0; }
+    .small-note { font-size:12px; color:var(--muted); line-height:1.7; }
+    @media(max-width:620px) { .admin-form { grid-template-columns:1fr; } .admin-form .full { grid-column:auto; } .welcome:after { font-size:75px; right:4%; } }
   </style>
 </head>
 <body>
@@ -161,8 +206,8 @@
       <div class="stats">
         <div class="stat">
           <div class="stat-label">Practice questions</div>
-          <div class="stat-value">Coming soon</div>
-          <div class="stat-note">Your question bank is next</div>
+          <div class="stat-value">100 MCQs</div>
+          <div class="stat-note">Across four core subjects</div>
         </div>
         <div class="stat">
           <div class="stat-label">Mock test scores</div>
@@ -181,22 +226,22 @@
         <span>4 core subjects</span>
       </div>
       <div class="subjects">
-        <article class="subject">
+        <article class="subject" role="button" tabindex="0" data-subject="Biology" aria-label="Practice Biology MCQs">
           <div class="subject-icon">🧬</div>
           <h3>Biology</h3>
           <p>Concepts, chapters & MCQs</p>
         </article>
-        <article class="subject">
+        <article class="subject" role="button" tabindex="0" data-subject="Chemistry" aria-label="Practice Chemistry MCQs">
           <div class="subject-icon">⚗️</div>
           <h3>Chemistry</h3>
           <p>Reactions, concepts & practice</p>
         </article>
-        <article class="subject">
+        <article class="subject" role="button" tabindex="0" data-subject="Physics" aria-label="Practice Physics MCQs">
           <div class="subject-icon">⚛️</div>
           <h3>Physics</h3>
           <p>Formulas, numericals & MCQs</p>
         </article>
-        <article class="subject">
+        <article class="subject" role="button" tabindex="0" data-subject="English" aria-label="Practice English MCQs">
           <div class="subject-icon">📘</div>
           <h3>English</h3>
           <p>Grammar & vocabulary</p>
@@ -210,28 +255,200 @@
       <div class="feature-list" id="tests">
         <article class="feature">
           <div class="feature-icon">🎯</div>
-          <h3>MCQ Practice</h3>
-          <p>Practise by subject, chapter, topic, and difficulty.</p>
+          <h3>Practice Builder</h3>
+          <p>Choose your subject and build a practice set that fits your preparation.</p>
         </article>
         <article class="feature">
           <div class="feature-icon">⏱️</div>
-          <h3>Timed Mock Tests</h3>
-          <p>Simulate exam conditions and review your answers.</p>
+          <h3>Answer Review</h3>
+          <p>Get instant feedback, explanations, and a score at the end.</p>
         </article>
         <article class="feature" id="planner">
           <div class="feature-icon">🗓️</div>
-          <h3>Study Planner</h3>
-          <p>Organise your preparation into manageable goals.</p>
+          <h3>Your Question Bank</h3>
+          <p>Practise academy-curated questions and review explanations after each attempt.</p>
         </article>
       </div>
 
+
+      <section class="welcome" id="mcq-quiz" style="margin-top:30px">
+        <div class="eyebrow">PRACTICE MCQS</div>
+        <h2 style="font-size:24px;margin:10px 0">Test your knowledge</h2>
+        <p>Choose a subject, answer the questions, and review explanations at the end. This starter bank contains original practice questions, not verified past-paper questions.</p>
+        <div class="quiz-controls">
+          <label for="quiz-subject">Subject</label>
+          <select id="quiz-subject">
+            <option value="All">All subjects</option>
+            <option value="Biology">Biology</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Physics">Physics</option>
+            <option value="English">English</option>
+          </select>
+          <label for="quiz-count">Number of MCQs</label>
+          <div class="count-wrap"><input id="quiz-count" type="number" min="1" step="1" value="10" inputmode="numeric" aria-describedby="count-help"></div>
+          <button class="button" id="quiz-start" type="button" disabled>Create Quiz →</button>
+          <span id="count-help" class="small-note">Type any number. You can choose up to the available questions.</span>
+        </div>
+      </section>
+      <section class="feature" id="quiz-stage" hidden aria-live="polite">
+        <div class="quiz-meta"><span id="quiz-progress">Question 1</span><span id="quiz-subject-tag"></span></div>
+        <div class="quiz-progress-track"><div id="quiz-progress-bar"></div></div>
+        <h2 id="quiz-question" style="margin:18px 0"></h2>
+        <div id="quiz-tags" class="quiz-tags"></div>
+        <div id="quiz-options" class="quiz-options"></div>
+        <div id="quiz-feedback" class="quiz-feedback" hidden></div>
+        <div class="quiz-actions">
+          <button class="button secondary" id="quiz-exit" type="button">End practice</button>
+          <button class="button" id="quiz-next" type="button" disabled>Next question →</button>
+        </div>
+      </section>
+      <section class="feature" id="quiz-results" hidden aria-live="polite">
+        <div class="eyebrow">PRACTICE COMPLETE</div>
+        <h2 id="quiz-score-title" style="margin:10px 0"></h2>
+        <p id="quiz-score-summary"></p>
+        <div id="quiz-review"></div>
+        <button class="button" id="quiz-restart" type="button">Try another practice set</button>
+      </section>
+<section class="motivation">
+        <div class="eyebrow">A NOTE FOR COMPETITIVE PREPARATION</div>
+        <h2>Keep going. One paper does not define you.</h2>
+        <p>Remember: the final question paper or a single result does not define your hard work, your ability, or your future. Many factors can affect exam-day performance. Learn from every attempt, protect your wellbeing, and keep moving forward with consistency. Your effort matters beyond one score.</p>
+      </section>
+
       <div class="notice">
-        <strong>Early preview:</strong> This is the first design version. Student accounts,
-        real question banks, test timers, saved results, and leaderboards are not active yet.
-        We'll add and test these features step by step.
+        <strong>Practice bank available:</strong> This version includes 100 original MDCAT-style practice questions with explanations. They are not represented as verified official past-paper questions. Questions are curated by SJN MDCAT Academy. Student accounts, cloud-saved results, and leaderboards are not active yet.
       </div>
       <footer>© 2026 SJN MDCAT LMS · Learn consistently, grow confidently.</footer>
     </main>
   </div>
+<script>
+
+    let BUILT_IN_QUESTIONS = [];
+    const questionBankStatus = document.createElement("p");
+    questionBankStatus.className = "small-note";
+    questionBankStatus.id = "bank-status";
+    questionBankStatus.textContent = "Loading academy question bank…";
+    document.querySelector(".quiz-controls").appendChild(questionBankStatus);
+    const bankReady = fetch("./questions.json").then(response => { if (!response.ok) throw new Error("Question bank unavailable"); return response.json(); }).then(data => { if (!Array.isArray(data)) throw new Error("Invalid question bank"); BUILT_IN_QUESTIONS = data; questionBankStatus.textContent = `${data.length} academy-curated practice questions available.`; startButton.disabled = false; }).catch(() => { questionBankStatus.textContent = "Question bank could not load. Please refresh the page or contact the academy."; });
+    function allQuestions() { return BUILT_IN_QUESTIONS; }
+    const subjectSelect = document.getElementById("quiz-subject");
+    const countSelect = document.getElementById("quiz-count");
+    const startButton = document.getElementById("quiz-start");
+    const stage = document.getElementById("quiz-stage");
+    const results = document.getElementById("quiz-results");
+    const progressText = document.getElementById("quiz-progress");
+    const subjectTag = document.getElementById("quiz-subject-tag");
+    const progressBar = document.getElementById("quiz-progress-bar");
+    const questionText = document.getElementById("quiz-question");
+    const tagsBox = document.getElementById("quiz-tags");
+    const optionsBox = document.getElementById("quiz-options");
+    const feedback = document.getElementById("quiz-feedback");
+    const nextButton = document.getElementById("quiz-next");
+    let activeQuestions = [], currentIndex = 0, score = 0, answers = [], answered = false;
+
+    function shuffle(items) {
+      const copy = items.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+    function startQuiz() {
+      if (!BUILT_IN_QUESTIONS.length) { alert("The academy question bank is still loading. Please try again in a moment."); return; }
+      const subject = subjectSelect.value;
+      let pool = allQuestions().filter(q => subject === "All" || q.subject === subject);
+      pool = shuffle(pool);
+      const requested = Number(countSelect.value);
+      if (!Number.isInteger(requested) || requested < 1) { alert("Please enter a whole number of at least 1."); countSelect.focus(); return; }
+      if (!pool.length) { alert("No questions are available for this subject yet."); return; }
+      activeQuestions = pool.slice(0, Math.min(requested, pool.length));
+      if (requested > pool.length) alert(`Only ${pool.length} questions are currently available for this selection, so the quiz will use all ${pool.length}.`);
+      currentIndex = 0; score = 0; answers = []; answered = false;
+      results.hidden = true; stage.hidden = false;
+      renderQuestion();
+      stage.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    function renderQuestion() {
+      const q = activeQuestions[currentIndex];
+      answered = false;
+      progressText.textContent = `Question ${currentIndex + 1} of ${activeQuestions.length}`;
+      subjectTag.textContent = q.subject;
+      progressBar.style.width = `${(currentIndex / activeQuestions.length) * 100}%`;
+      questionText.textContent = q.question;
+      tagsBox.replaceChildren();
+      [q.chapter, q.topic, q.difficulty].forEach(value => {
+        const tag = document.createElement("span");
+        tag.className = "quiz-tag"; tag.textContent = value; tagsBox.appendChild(tag);
+      });
+      optionsBox.replaceChildren();
+      feedback.hidden = true; feedback.textContent = "";
+      nextButton.disabled = true;
+      nextButton.textContent = currentIndex === activeQuestions.length - 1 ? "See results →" : "Next question →";
+      q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.type = "button"; button.className = "quiz-option";
+        button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+        button.addEventListener("click", () => chooseAnswer(index));
+        optionsBox.appendChild(button);
+      });
+    }
+    function chooseAnswer(index) {
+      if (answered) return;
+      answered = true;
+      const q = activeQuestions[currentIndex];
+      const buttons = [...optionsBox.querySelectorAll("button")];
+      buttons.forEach((button, i) => {
+        button.disabled = true;
+        if (i === q.answer) button.classList.add("correct");
+        if (i === index && index !== q.answer) button.classList.add("incorrect");
+      });
+      const correct = index === q.answer;
+      if (correct) score++;
+      answers.push({question:q, chosen:index, correct});
+      feedback.hidden = false;
+      feedback.textContent = `${correct ? "Correct! " : "Not quite. "}${q.explanation}`;
+      nextButton.disabled = false;
+      progressBar.style.width = `${((currentIndex + 1) / activeQuestions.length) * 100}%`;
+    }
+    function showResults() {
+      stage.hidden = true; results.hidden = false;
+      const percent = Math.round((score / activeQuestions.length) * 100);
+      document.getElementById("quiz-score-title").textContent = `${score} / ${activeQuestions.length} correct (${percent}%)`;
+      document.getElementById("quiz-score-summary").textContent = "Review the explanations below, then start another practice set whenever you are ready.";
+      const review = document.getElementById("quiz-review"); review.replaceChildren();
+      answers.forEach((item, i) => {
+        const div = document.createElement("div"); div.className = "quiz-review-item";
+        const title = document.createElement("strong"); title.textContent = `${i + 1}. ${item.question.question}`;
+        const detail = document.createElement("div");
+        detail.textContent = `${item.correct ? "Correct" : "Your answer: " + item.question.options[item.chosen] + " · Correct answer: " + item.question.options[item.question.answer]} — ${item.question.explanation}`;
+        div.append(title, detail); review.appendChild(div);
+      });
+      results.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    startButton.addEventListener("click", startQuiz);
+    nextButton.addEventListener("click", () => {
+      if (!answered) return;
+      if (currentIndex < activeQuestions.length - 1) { currentIndex++; renderQuestion(); }
+      else showResults();
+    });
+    document.getElementById("quiz-exit").addEventListener("click", () => {
+      stage.hidden = true;
+      document.getElementById("mcq-quiz").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+    document.getElementById("quiz-restart").addEventListener("click", () => {
+      document.getElementById("mcq-quiz").scrollIntoView({behavior:"smooth", block:"start"});
+      startQuiz();
+    });
+
+    // Subject tiles really work: click a tile to choose that subject and jump to quiz setup.
+    document.querySelectorAll(".subject[data-subject]").forEach(tile => {
+      const choose = () => { subjectSelect.value = tile.dataset.subject; document.getElementById("mcq-quiz").scrollIntoView({behavior:"smooth",block:"start"}); subjectSelect.focus({preventScroll:true}); };
+      tile.addEventListener("click", choose);
+      tile.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(); } });
+    });
+
+
+  </script>
 </body>
 </html>

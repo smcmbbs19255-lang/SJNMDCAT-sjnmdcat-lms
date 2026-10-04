@@ -3,262 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SJN MDCAT LMS</title>
-    <!-- React & Babel for logic -->
+    <title>SJN MDCAT LMS - Premium</title>
+    
+    <!-- React & Babel -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <!-- Tailwind CSS for styling -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for icons -->
+    
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        glassBg: 'rgba(30, 41, 59, 0.7)',
+                        glassBorder: 'rgba(255, 255, 255, 0.1)',
+                        accent: '#14b8a6', // Teal
+                        accentHover: '#0d9488'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { 
+            background-color: #0f172a; 
+            color: #e2e8f0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+            background-attachment: fixed;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState } = React;
 
-        // --- QUESTION BANK ---
-        // You can expand this array to hold all 180 MCQs
-        const questionBank = [
-            { id: 1, subject: "Biology", question: "Which of the following is considered the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi Apparatus"], correct: "Mitochondria", explanation: "Mitochondria generate most of the chemical energy needed to power the cell's biochemical reactions." },
-            { id: 2, subject: "Physics", question: "What is the SI unit of electric current?", options: ["Volt", "Ampere", "Coulomb", "Ohm"], correct: "Ampere", explanation: "The Ampere (A) is the SI base unit of electrical current." },
-            { id: 3, subject: "Chemistry", question: "Which bond is formed by the sharing of electron pairs between atoms?", options: ["Ionic Bond", "Covalent Bond", "Hydrogen Bond", "Metallic Bond"], correct: "Covalent Bond", explanation: "A covalent bond involves the sharing of electron pairs between nonmetal atoms." },
-            { id: 4, subject: "English", question: "Choose the correct synonym for 'Ephemeral':", options: ["Permanent", "Short-lived", "Glowing", "Intense"], correct: "Short-lived", explanation: "Ephemeral means lasting for a very short time." },
-            { id: 5, subject: "Logical Reasoning", question: "If A is taller than B, and B is taller than C, who is the shortest?", options: ["A", "B", "C", "Cannot be determined"], correct: "C", explanation: "Since A > B and B > C, it logically follows that C is the shortest." }
-        ];
-
         function App() {
-            const [currentView, setCurrentView] = useState('dashboard');
-            const [mistakes, setMistakes] = useState([]);
-
-            const logMistake = (question, selected, correct) => {
-                // Prevent duplicate logs of the same question
-                if (!mistakes.find(m => m.id === question.id)) {
-                    setMistakes([...mistakes, { ...question, selected }]);
-                }
-            };
+            const [activeTab, setActiveTab] = useState('dashboard');
 
             return (
-                <div class="min-h-screen flex flex-col">
-                    {/* Navigation Bar */}
-                    <nav class="bg-teal-700 text-white shadow-lg">
-                        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                            <div class="text-2xl font-bold tracking-wider cursor-pointer" onClick={() => setCurrentView('dashboard')}>
-                                <i class="fa-solid fa-graduation-cap mr-2"></i>SJN MDCAT LMS
+                <div className="flex h-screen overflow-hidden">
+                    {/* Sidebar */}
+                    <aside className="w-64 glass-panel border-r border-glassBorder flex flex-col transition-all duration-300">
+                        <div className="p-6 flex items-center gap-3 border-b border-glassBorder">
+                            <div className="bg-gradient-to-tr from-teal-400 to-blue-500 text-white p-2 rounded-lg shadow-lg shadow-teal-500/30">
+                                <i className="fa-solid fa-brain text-xl"></i>
                             </div>
-                            <div class="space-x-4">
-                                <button onClick={() => setCurrentView('dashboard')} class="hover:text-teal-200 transition"><i class="fa-solid fa-home mr-1"></i> Dashboard</button>
-                                <button onClick={() => setCurrentView('quiz')} class="hover:text-teal-200 transition"><i class="fa-solid fa-laptop-code mr-1"></i> Practice Test</button>
-                                <button onClick={() => setCurrentView('mistakes')} class="hover:text-teal-200 transition"><i class="fa-solid fa-book-open mr-1"></i> Mistake Book ({mistakes.length})</button>
+                            <h1 className="text-xl font-bold tracking-wider text-white">SJN MDCAT</h1>
+                        </div>
+                        
+                        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                            <NavItem icon="fa-chart-pie" label="Dashboard" isActive={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+                            <NavItem icon="fa-layer-group" label="Question Bank" isActive={activeTab === 'qbank'} onClick={() => setActiveTab('qbank')} />
+                            <NavItem icon="fa-stopwatch" label="Mock Exams" isActive={activeTab === 'mocks'} onClick={() => setActiveTab('mocks')} />
+                            <NavItem icon="fa-book-skull" label="Mistake Book" isActive={activeTab === 'mistakes'} badge="12" onClick={() => setActiveTab('mistakes')} />
+                            <NavItem icon="fa-chart-line" label="Analytics" isActive={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} />
+                        </nav>
+                        
+                        <div className="p-4 border-t border-glassBorder">
+                            <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition">
+                                <i className="fa-solid fa-gear"></i> Settings
+                            </button>
+                        </div>
+                    </aside>
+
+                    {/* Main Content */}
+                    <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
+                        {/* Top Header */}
+                        <header className="h-20 glass-panel border-b border-glassBorder flex items-center justify-between px-8 z-10">
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">Overview</h2>
+                                <p className="text-sm text-gray-400">Track your MDCAT preparation progress</p>
                             </div>
-                        </div>
-                    </nav>
-
-                    {/* Main Content Area */}
-                    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8">
-                        {currentView === 'dashboard' && <Dashboard setView={setCurrentView} mistakesCount={mistakes.length} totalQuestions={questionBank.length} />}
-                        {currentView === 'quiz' && <QuizEngine setView={setCurrentView} questions={questionBank} logMistake={logMistake} />}
-                        {currentView === 'mistakes' && <MistakeBook mistakes={mistakes} setView={setCurrentView} />}
-                    </main>
-
-                    {/* Footer */}
-                    <footer class="bg-gray-800 text-gray-400 text-center py-4">
-                        <p>&copy; 2026 SJN MDCAT Academy. Dedicated to Medical Excellence.</p>
-                    </footer>
-                </div>
-            );
-        }
-
-        // --- DASHBOARD COMPONENT ---
-        function Dashboard({ setView, mistakesCount, totalQuestions }) {
-            return (
-                <div class="space-y-8 animate-fade-in">
-                    <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-teal-600 text-center">
-                        <h1 class="text-4xl font-bold text-gray-800 mb-2">Welcome to SJN MDCAT Academy</h1>
-                        <p class="text-gray-600">Your dedicated portal for realistic MDCAT test preparation.</p>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        {/* Start Quiz Card */}
-                        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col items-center" onClick={() => setView('quiz')}>
-                            <div class="bg-teal-100 p-4 rounded-full text-teal-700 mb-4">
-                                <i class="fa-solid fa-play text-3xl"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Custom Practice Quiz</h2>
-                            <p class="text-gray-500 text-center mb-4">Practice {totalQuestions} available questions from past papers. Tests are generated instantly.</p>
-                            <button class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition w-full">Start Practice</button>
-                        </div>
-
-                        {/* Mistake Book Card */}
-                        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col items-center" onClick={() => setView('mistakes')}>
-                            <div class="bg-red-100 p-4 rounded-full text-red-600 mb-4">
-                                <i class="fa-solid fa-book-medical text-3xl"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Smart Mistake Book</h2>
-                            <p class="text-gray-500 text-center mb-4">Review the concepts you got wrong. You currently have <span class="font-bold text-red-600">{mistakesCount}</span> logged mistakes.</p>
-                            <button class="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition w-full">Review Mistakes</button>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        // --- QUIZ ENGINE COMPONENT ---
-        function QuizEngine({ setView, questions, logMistake }) {
-            const [currentIndex, setCurrentIndex] = useState(0);
-            const [selectedOption, setSelectedOption] = useState(null);
-            const [isSubmitted, setIsSubmitted] = useState(false);
-            const [score, setScore] = useState(0);
-            const [showResults, setShowResults] = useState(false);
-
-            const currentQ = questions[currentIndex];
-
-            const handleSubmit = () => {
-                if (!selectedOption) return;
-                setIsSubmitted(true);
-                
-                if (selectedOption === currentQ.correct) {
-                    setScore(score + 1);
-                } else {
-                    logMistake(currentQ, selectedOption, currentQ.correct);
-                }
-            };
-
-            const handleNext = () => {
-                if (currentIndex + 1 < questions.length) {
-                    setCurrentIndex(currentIndex + 1);
-                    setSelectedOption(null);
-                    setIsSubmitted(false);
-                } else {
-                    setShowResults(true);
-                }
-            };
-
-            if (showResults) {
-                return (
-                    <div class="bg-white p-8 rounded-xl shadow-md text-center max-w-2xl mx-auto">
-                        <i class="fa-solid fa-award text-6xl text-yellow-400 mb-4"></i>
-                        <h2 class="text-3xl font-bold mb-2">Test Completed!</h2>
-                        <p class="text-xl text-gray-600 mb-6">You scored <span class="font-bold text-teal-600">{score}</span> out of <span class="font-bold">{questions.length}</span>.</p>
-                        <div class="flex justify-center space-x-4">
-                            <button onClick={() => setView('mistakes')} class="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition">View Mistake Book</button>
-                            <button onClick={() => setView('dashboard')} class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition">Back to Home</button>
-                        </div>
-                    </div>
-                );
-            }
-
-            return (
-                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-teal-600">
-                    <div class="flex justify-between items-center mb-6">
-                        <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold">{currentQ.subject}</span>
-                        <span class="text-gray-500 font-medium">Question {currentIndex + 1} of {questions.length}</span>
-                    </div>
-                    
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">{currentQ.question}</h2>
-
-                    <div class="space-y-3 mb-6">
-                        {currentQ.options.map((opt, i) => {
-                            let btnClass = "w-full text-left p-4 rounded-lg border-2 transition font-medium ";
                             
-                            if (!isSubmitted) {
-                                btnClass += selectedOption === opt ? "border-teal-500 bg-teal-50 text-teal-800" : "border-gray-200 hover:border-teal-300 hover:bg-gray-50 text-gray-700";
-                            } else {
-                                if (opt === currentQ.correct) {
-                                    btnClass += "border-green-500 bg-green-50 text-green-800"; // Correct answer is green
-                                } else if (selectedOption === opt && opt !== currentQ.correct) {
-                                    btnClass += "border-red-500 bg-red-50 text-red-800"; // Wrong selected answer is red
-                                } else {
-                                    btnClass += "border-gray-200 text-gray-400";
-                                }
-                            }
-
-                            return (
-                                <button 
-                                    key={i} 
-                                    disabled={isSubmitted}
-                                    onClick={() => setSelectedOption(opt)}
-                                    class={btnClass}
-                                >
-                                    {opt}
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {isSubmitted && (
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded text-blue-800">
-                            <strong>Explanation:</strong> {currentQ.explanation}
-                        </div>
-                    )}
-
-                    <div class="flex justify-end">
-                        {!isSubmitted ? (
-                            <button onClick={handleSubmit} disabled={!selectedOption} class={`px-8 py-2 rounded-lg font-semibold text-white transition ${selectedOption ? 'bg-teal-600 hover:bg-teal-700' : 'bg-gray-300 cursor-not-allowed'}`}>Submit</button>
-                        ) : (
-                            <button onClick={handleNext} class="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 rounded-lg font-semibold transition">Next Question <i class="fa-solid fa-arrow-right ml-2"></i></button>
-                        )}
-                    </div>
-                </div>
-            );
-        }
-
-        // --- MISTAKE BOOK COMPONENT ---
-        function MistakeBook({ mistakes, setView }) {
-            if (mistakes.length === 0) {
-                return (
-                    <div class="text-center bg-white p-12 rounded-xl shadow-md max-w-2xl mx-auto">
-                        <i class="fa-solid fa-check-circle text-6xl text-green-500 mb-4"></i>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Your Mistake Book is Empty!</h2>
-                        <p class="text-gray-500 mb-6">Great job. You haven't logged any wrong answers yet.</p>
-                        <button onClick={() => setView('quiz')} class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition">Take a Practice Test</button>
-                    </div>
-                );
-            }
-
-            return (
-                <div class="max-w-4xl mx-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-book-medical text-red-500 mr-2"></i> Mistake Book</h2>
-                        <span class="bg-red-100 text-red-800 px-4 py-1 rounded-full font-bold">{mistakes.length} Logged</span>
-                    </div>
-
-                    <div class="space-y-6">
-                        {mistakes.map((m, index) => (
-                            <div key={index} class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-sm font-bold text-gray-500 uppercase">{m.subject}</span>
+                            <div className="flex items-center gap-6">
+                                <div className="relative cursor-pointer text-gray-400 hover:text-white transition">
+                                    <i className="fa-regular fa-bell text-xl"></i>
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-lg shadow-red-500/50">3</span>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">{m.question}</h3>
-                                
-                                <div class="grid md:grid-cols-2 gap-4 mb-4">
-                                    <div class="bg-red-50 p-3 rounded-lg border border-red-200">
-                                        <span class="block text-xs text-red-500 font-bold uppercase mb-1">You selected</span>
-                                        <span class="text-red-800">{m.selected}</span>
+                                <div className="flex items-center gap-3 pl-6 border-l border-glassBorder cursor-pointer group">
+                                    <div className="text-right">
+                                        <p className="text-sm font-bold text-white group-hover:text-teal-400 transition">Dr. Zamaad Nizamani</p>
+                                        <p className="text-xs text-gray-400">MBBS Graduate / Admin</p>
                                     </div>
-                                    <div class="bg-green-50 p-3 rounded-lg border border-green-200">
-                                        <span class="block text-xs text-green-500 font-bold uppercase mb-1">Correct Answer</span>
-                                        <span class="text-green-800">{m.correct}</span>
+                                    <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-bold shadow-lg">
+                                        ZN
                                     </div>
-                                </div>
-                                <div class="text-sm text-gray-600 bg-gray-50 p-3 rounded">
-                                    <strong>Concept Review:</strong> {m.explanation}
                                 </div>
                             </div>
-                        ))}
+                        </header>
+
+                        {/* Scrollable Content Area */}
+                        <div className="flex-1 overflow-y-auto p-8 z-0">
+                            {activeTab === 'dashboard' && <DashboardContent />}
+                            {activeTab !== 'dashboard' && (
+                                <div className="flex items-center justify-center h-full text-gray-500 flex-col">
+                                    <i className="fa-solid fa-person-digging text-6xl mb-4 text-gray-600"></i>
+                                    <h2 className="text-2xl font-bold text-gray-300">Module Under Construction</h2>
+                                    <p>Select Dashboard to see the main features.</p>
+                                </div>
+                            )}
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function NavItem({ icon, label, isActive, badge, onClick }) {
+            return (
+                <button 
+                    onClick={onClick}
+                    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${isActive ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30 shadow-[0_0_15px_rgba(20,184,166,0.15)]' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}
+                >
+                    <div className="flex items-center gap-3">
+                        <i className={`fa-solid ${icon} w-5 text-center`}></i>
+                        <span className="font-medium">{label}</span>
+                    </div>
+                    {badge && (
+                        <span className="bg-red-500/20 text-red-400 border border-red-500/30 text-xs py-0.5 px-2 rounded-full font-bold">
+                            {badge}
+                        </span>
+                    )}
+                </button>
+            );
+        }
+
+        function DashboardContent() {
+            return (
+                <div className="space-y-8 pb-10 animate-fade-in">
+                    
+                    {/* Welcome Banner */}
+                    <div className="glass-panel rounded-2xl p-8 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-teal-500/20 transition-all duration-700"></div>
+                        <div className="relative z-10 flex justify-between items-center">
+                            <div>
+                                <h1 className="text-3xl font-bold text-white mb-2">Ready to crush the MDCAT?</h1>
+                                <p className="text-gray-400 mb-6 max-w-lg">You have completed 450 MCQs this week. Your accuracy in Physics has improved by 12%. Keep up the great work!</p>
+                                <button className="bg-teal-500 hover:bg-teal-400 text-slate-900 font-bold py-3 px-6 rounded-xl shadow-[0_0_20px_rgba(20,184,166,0.4)] transition-all transform hover:-translate-y-1">
+                                    <i className="fa-solid fa-play mr-2"></i> Start Daily Practice
+                                </button>
+                            </div>
+                            <div className="hidden md:block">
+                                <i className="fa-solid fa-user-doctor text-8xl text-white/5"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* KPI Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <KpiCard title="Total MCQs Solved" value="3,402" icon="fa-check-double" color="text-blue-400" bg="bg-blue-400/10" border="border-blue-500/20" trend="+124 this week" />
+                        <KpiCard title="Overall Accuracy" value="78.4%" icon="fa-bullseye" color="text-teal-400" bg="bg-teal-400/10" border="border-teal-500/20" trend="+2.1% from last month" />
+                        <KpiCard title="Tests Completed" value="14" icon="fa-file-lines" color="text-purple-400" bg="bg-purple-400/10" border="border-purple-500/20" trend="2 Full Length Papers" />
+                        <KpiCard title="Study Streak" value="12 Days" icon="fa-fire-flame-curved" color="text-orange-400" bg="bg-orange-400/10" border="border-orange-500/20" trend="Personal Best: 21 Days" />
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Performance Chart Area (Simulated) */}
+                        <div className="lg:col-span-2 glass-panel rounded-2xl p-6 flex flex-col">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="text-xl font-bold text-white">Recent Test Performance</h3>
+                                <select className="bg-slate-800 text-sm border border-glassBorder text-gray-300 rounded-lg px-3 py-1 outline-none focus:border-teal-500">
+                                    <option>Last 7 Tests</option>
+                                    <option>Last 30 Days</option>
+                                </select>
+                            </div>
+                            {/* Simulated Bar Chart UI */}
+                            <div className="flex-1 flex items-end justify-between gap-2 pt-10 relative">
+                                {/* Grid lines */}
+                                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-8 text-xs text-gray-600">
+                                    <div className="border-b border-white/5 w-full h-0">100%</div>
+                                    <div className="border-b border-white/5 w-full h-0">75%</div>
+                                    <div className="border-b border-white/5 w-full h-0">50%</div>
+                                    <div className="border-b border-white/5 w-full h-0">25%</div>
+                                </div>
+                                
+                                <ChartBar height="h-[65%]" label="Test 1" />
+                                <ChartBar height="h-[72%]" label="Test 2" />
+                                <ChartBar height="h-[68%]" label="Test 3" />
+                                <ChartBar height="h-[80%]" label="Test 4" />
+                                <ChartBar height="h-[76%]" label="Test 5" />
+                                <ChartBar height="h-[85%]" label="Test 6" active={true} />
+                            </div>
+                        </div>
+
+                        {/* Subject Mastery Indicators */}
+                        <div className="glass-panel rounded-2xl p-6">
+                            <h3 className="text-xl font-bold text-white mb-6">Subject Mastery</h3>
+                            <div className="space-y-5">
+                                <ProgressRow subject="Biology" percentage="88" color="bg-green-500" />
+                                <ProgressRow subject="Chemistry" percentage="72" color="bg-blue-500" />
+                                <ProgressRow subject="Physics" percentage="54" color="bg-red-500" />
+                                <ProgressRow subject="English" percentage="92" color="bg-purple-500" />
+                                <ProgressRow subject="Logical Reasoning" percentage="80" color="bg-yellow-500" />
+                            </div>
+                            <button className="w-full mt-6 bg-white/5 hover:bg-white/10 border border-glassBorder text-gray-300 py-2 rounded-xl transition text-sm">
+                                View Detailed Analysis
+                            </button>
+                        </div>
                     </div>
                 </div>
             );
         }
 
-        // Render the App
+        function KpiCard({ title, value, icon, color, bg, border, trend }) {
+            return (
+                <div className={`glass-panel rounded-2xl p-6 border ${border} hover:bg-white/5 transition-all duration-300`}>
+                    <div className="flex justify-between items-start mb-4">
+                        <div className={`w-12 h-12 rounded-xl ${bg} ${color} flex items-center justify-center text-xl`}>
+                            <i className={`fa-solid ${icon}`}></i>
+                        </div>
+                        <span className="text-xs font-medium text-gray-500 bg-slate-800/80 px-2 py-1 rounded-lg">{trend}</span>
+                    </div>
+                    <h4 className="text-gray-400 text-sm font-medium mb-1">{title}</h4>
+                    <p className="text-3xl font-bold text-white">{value}</p>
+                </div>
+            );
+        }
+
+        function ChartBar({ height, label, active }) {
+            return (
+                <div className="flex flex-col items-center flex-1 z-10 group">
+                    <div className="w-full px-1 sm:px-2 md:px-4 h-48 flex items-end justify-center">
+                        <div className={`w-full rounded-t-md transition-all duration-500 relative ${active ? 'bg-gradient-to-t from-teal-600 to-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.3)]' : 'bg-slate-700 group-hover:bg-slate-600'} ${height}`}>
+                            {active && <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white text-slate-900 text-xs font-bold py-1 px-2 rounded">85%</div>}
+                        </div>
+                    </div>
+                    <span className="text-xs text-gray-500 mt-3">{label}</span>
+                </div>
+            );
+        }
+
+        function ProgressRow({ subject, percentage, color }) {
+            return (
+                <div>
+                    <div className="flex justify-between text-sm mb-1.5">
+                        <span className="text-gray-300 font-medium">{subject}</span>
+                        <span className="text-gray-400 font-bold">{percentage}%</span>
+                    </div>
+                    <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-glassBorder">
+                        <div className={`h-2.5 rounded-full ${color} shadow-[0_0_10px_currentColor]`} style={{ width: `${percentage}%` }}></div>
+                    </div>
+                </div>
+            );
+        }
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 </body>
-</html>
+    </html>
